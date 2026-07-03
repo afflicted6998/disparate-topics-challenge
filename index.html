@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Disparate Topics Challenge — Slot Machine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Archivo:wdth,wght@100,500;100,700;100,900&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --walnut-deep:#1d1206;
+  --walnut:#33200e;
+  --cabinet:#4a2f16;
+  --cabinet-hi:#6b4423;
+  --paper:#f3e7cd;
+  --paper-dim:#e2d2ad;
+  --ink:#2a1c0c;
+  --brass:#c9a25e;
+  --brass-hi:#e8cf95;
+  --signal:#b5382c;
+  --moss:#2f6b4f;
+  --moss-hi:#5aa37f;
+  --bulb-off:#5a3d1e;
+  --bulb-on:#ffd97a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--walnut-deep);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(255,205,110,.10), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.16) 0 3px, transparent 3px 90px);
+  color:var(--paper);
+  font-family:'Archivo',system-ui,sans-serif;
+  font-stretch:100%;
+  min-height:100vh;
+  padding:22px 14px 80px;
+}
+.wrap{max-width:760px;margin:0 auto}
+
+/* ---------- Marquee ---------- */
+.marquee{
+  text-align:center;
+  padding:18px 12px 14px;
+  border:3px solid var(--brass);
+  border-radius:14px 14px 4px 4px;
+  background:linear-gradient(180deg,#3c2410,#2a1809);
+  box-shadow:inset 0 0 0 2px #1a0f04, 0 8px 24px rgba(0,0,0,.55);
+  position:relative;
+}
+.marquee h1{
+  font-family:'Rye',serif;
+  font-weight:400;
+  color:var(--brass-hi);
+  text-shadow:0 2px 0 #4a2f10, 0 0 22px rgba(255,215,130,.28);
+  font-size:clamp(1.35rem,5.4vw,2.3rem);
+  letter-spacing:.02em;
+  line-height:1.15;
+}
+.marquee .sub{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.68rem;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--paper-dim);
+  margin-top:8px;
+}
+.bulbs{display:flex;justify-content:center;gap:10px;margin-top:12px}
+.bulb{width:9px;height:9px;border-radius:50%;background:var(--bulb-off);box-shadow:inset 0 -1px 2px rgba(0,0,0,.5)}
+.spinning .bulb{animation:chase 0.8s infinite}
+.bulb:nth-child(3n+2){animation-delay:.26s}
+.bulb:nth-child(3n+3){animation-delay:.52s}
+@keyframes chase{0%,100%{background:var(--bulb-off);box-shadow:none}30%{background:var(--bulb-on);box-shadow:0 0 10px 2px rgba(255,217,122,.75)}}
+.won .bulb{animation:chase .35s infinite}
+
+/* ---------- Cabinet ---------- */
+.cabinet{
+  margin-top:-3px;
+  border:3px solid var(--brass);
+  border-top:none;
+  border-radius:4px 4px 18px 18px;
+  background:linear-gradient(180deg,var(--cabinet),#3a2410 70%,#2c1a0a);
+  box-shadow:inset 0 4px 12px rgba(0,0,0,.4), 0 14px 34px rgba(0,0,0,.6);
+  padding:22px 16px 20px;
+  display:grid;
+  grid-template-columns:1fr 58px;
+  gap:14px;
+  align-items:stretch;
+}
+.reels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.reel{
+  background:var(--paper);
+  border-radius:10px;
+  border:2px solid #8a6a3a;
+  box-shadow:inset 0 10px 18px rgba(0,0,0,.28), inset 0 -10px 18px rgba(0,0,0,.28);
+  min-height:190px;
+  position:relative;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.reel::before,.reel::after{
+  content:"";position:absolute;left:0;right:0;height:34px;z-index:3;pointer-events:none;
+}
+.reel::before{top:0;background:linear-gradient(180deg,rgba(30,18,5,.5),transparent)}
+.reel::after{bottom:0;background:linear-gradient(0deg,rgba(30,18,5,.5),transparent)}
+.strip{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:flex-start;
+  color:#6b5636;
+  font-weight:700;font-size:.82rem;text-align:center;
+  filter:blur(1.4px);
+  opacity:0;
+}
+.strip span{padding:14px 8px;border-bottom:1px dashed #cbb98d;flex:none}
+.reel.spin .strip{opacity:1;animation:roll .38s linear infinite}
+@keyframes roll{from{transform:translateY(0)}to{transform:translateY(-33.333%)}}
+.face{
+  position:relative;z-index:2;
+  text-align:center;padding:14px 10px;
+  color:var(--ink);
+  width:100%;
+  opacity:0;transform:scale(.86);
+  transition:opacity .28s, transform .34s cubic-bezier(.2,1.6,.4,1);
+}
+.reel.locked .face{opacity:1;transform:scale(1)}
+.reel.locked{background:linear-gradient(180deg,#fbf2dd,var(--paper))}
+.face .idx{
+  font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.28em;
+  color:#8a6a3a;text-transform:uppercase;display:block;margin-bottom:8px;
+}
+.face .title{font-weight:900;font-size:1.02rem;line-height:1.22;word-break:break-word}
+.face .meta{
+  font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:#6b5636;margin-top:10px;
+}
+.reel .idle{
+  z-index:1;color:#c9b78c;font-family:'Rye',serif;font-size:2.4rem;
+  text-shadow:0 1px 0 #fff;
+}
+.reel.spin .idle,.reel.locked .idle{display:none}
+
+/* ---------- Lever ---------- */
+.leverzone{display:flex;align-items:center;justify-content:center}
+.lever{
+  width:100%;height:100%;min-height:190px;
+  background:linear-gradient(180deg,#2a1a0a,#1c1005);
+  border:2px solid #8a6a3a;border-radius:12px;
+  position:relative;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;
+  transition:filter .2s;
+}
+.lever:hover{filter:brightness(1.15)}
+.lever:disabled{cursor:wait;filter:grayscale(.5) brightness(.8)}
+.lever .track{width:6px;flex:1;margin:16px 0;background:#0d0803;border-radius:3px;box-shadow:inset 0 0 4px #000;position:relative}
+.lever .knob{
+  position:absolute;left:50%;top:0;transform:translate(-50%,0);
+  width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#e86a56,var(--signal) 60%,#7c241b);
+  box-shadow:0 3px 8px rgba(0,0,0,.6), inset 0 -2px 4px rgba(0,0,0,.35);
+  transition:top .45s cubic-bezier(.6,0,.4,1.4);
+}
+.lever.pulled .knob{top:calc(100% - 26px)}
+.lever .word{
+  font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.3em;
+  color:var(--brass);writing-mode:vertical-rl;padding-bottom:12px;text-transform:uppercase;
+}
+
+/* ---------- Ticker ---------- */
+.ticker{
+  margin-top:14px;
+  background:#0f0a04;
+  border:2px solid #8a6a3a;border-radius:8px;
+  padding:12px 14px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.7rem;line-height:1.75;
+  color:#d9c592;
+  min-height:96px;
+  box-shadow:inset 0 0 18px rgba(0,0,0,.7);
+}
+.ticker .line{white-space:pre-wrap;word-break:break-word;opacity:.55}
+.ticker .line:last-child{opacity:1;color:#ffe9b0}
+.ticker .ok{color:var(--moss-hi)}
+.ticker .bad{color:#e8836f}
+
+/* ---------- Controls ---------- */
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.badge{
+  font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.14em;
+  text-transform:uppercase;padding:6px 12px;border-radius:999px;border:1px solid var(--brass);
+  color:var(--brass-hi);
+}
+.badge.demo{border-color:var(--signal);color:#f0a294}
+button.ui, .ui-link{
+  font-family:'Archivo',sans-serif;font-weight:700;font-size:.78rem;
+  background:linear-gradient(180deg,var(--cabinet-hi),var(--cabinet));
+  color:var(--paper);border:1px solid var(--brass);border-radius:8px;
+  padding:9px 15px;cursor:pointer;letter-spacing:.03em;
+}
+button.ui:hover{filter:brightness(1.15)}
+button.ui:focus-visible,.lever:focus-visible{outline:3px solid var(--brass-hi);outline-offset:2px}
+button.ui:disabled{opacity:.45;cursor:default}
+button.ui.small{font-size:.68rem;padding:6px 10px}
+
+/* ---------- Results ---------- */
+.results{margin-top:22px;display:none}
+.results.show{display:block}
+.results h2{
+  font-family:'Rye',serif;font-weight:400;color:var(--brass-hi);
+  font-size:1.05rem;letter-spacing:.05em;margin-bottom:12px;text-align:center;
+}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.card{
+  background:var(--paper);color:var(--ink);border-radius:10px;
+  border:2px solid #8a6a3a;padding:14px;position:relative;
+}
+.card .idx{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.26em;color:#8a6a3a;text-transform:uppercase}
+.card h3{font-size:1rem;font-weight:900;margin:6px 0 8px;line-height:1.25}
+.card h3 a{color:inherit;text-decoration:none;border-bottom:2px solid var(--brass)}
+.card p{font-size:.76rem;color:#4d3d24;line-height:1.5}
+.card .meta{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:#6b5636;margin-top:10px}
+.card .respin{position:absolute;top:10px;right:10px}
+.sepline{
+  margin-top:14px;text-align:center;
+  font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.08em;color:var(--moss-hi);
+}
+.resultbtns{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+
+/* ---------- Panels ---------- */
+.panel{
+  margin-top:18px;background:var(--walnut);border:1px solid #6b4423;border-radius:10px;padding:16px;
+}
+.panel summary{
+  cursor:pointer;font-weight:700;font-size:.82rem;letter-spacing:.04em;color:var(--brass-hi);
+  list-style:none;
+}
+.panel summary::before{content:"◆ ";color:var(--brass)}
+.panel[open] summary{margin-bottom:12px}
+.panel label{display:block;font-size:.72rem;font-weight:700;margin:12px 0 5px;color:var(--paper-dim)}
+.panel input[type=text],.panel input[type=url],.panel select,.panel textarea{
+  width:100%;background:#150d05;color:var(--paper);border:1px solid #6b4423;border-radius:6px;
+  padding:8px 10px;font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+}
+.panel textarea{min-height:64px;resize:vertical}
+.panel .hint{font-size:.66rem;color:#a08a5f;margin-top:4px;line-height:1.5}
+.panel pre{
+  background:#150d05;border:1px solid #6b4423;border-radius:6px;padding:10px;
+  font-size:.62rem;overflow-x:auto;color:#d9c592;margin-top:6px;line-height:1.6;
+}
+.panel .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.panel .row label{margin:0}
+.history-list{list-style:none}
+.history-list li{
+  font-family:'IBM Plex Mono',monospace;font-size:.66rem;padding:9px 0;line-height:1.6;
+  border-bottom:1px dashed #4a2f16;color:var(--paper-dim);
+}
+.history-list li b{color:var(--paper)}
+.notice{
+  display:none;margin-top:12px;padding:10px 14px;border-radius:8px;font-size:.72rem;line-height:1.5;
+  border:1px solid var(--signal);background:rgba(181,56,44,.12);color:#f0b3a7;
+}
+.notice.show{display:block}
+footer{
+  margin-top:26px;text-align:center;font-family:'IBM Plex Mono',monospace;
+  font-size:.6rem;letter-spacing:.14em;color:#8a6a3a;text-transform:uppercase;
+}
+@media(max-width:520px){
+  .cabinet{grid-template-columns:1fr 46px;padding:14px 10px 16px}
+  .reels{gap:7px}
+  .reel{min-height:158px}
+  .face .title{font-size:.86rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .reel.spin .strip{animation:none;opacity:.4}
+  .spinning .bulb,.won .bulb{animation:none;background:var(--bulb-on)}
+  .lever .knob{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="marquee" id="marquee">
+    <h1>The Disparate Topics Challenge</h1>
+    <div class="sub">Three topics · genuinely unrelated · pull the lever</div>
+    <div class="bulbs" aria-hidden="true">
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    </div>
+  </div>
+
+  <div class="cabinet">
+    <div class="reels">
+      <div class="reel" id="reel0"><div class="idle">?</div><div class="strip"></div><div class="face"></div></div>
+      <div class="reel" id="reel1"><div class="idle">?</div><div class="strip"></div><div class="face"></div></div>
+      <div class="reel" id="reel2"><div class="idle">?</div><div class="strip"></div><div class="face"></div></div>
+    </div>
+    <div class="leverzone">
+      <button class="lever" id="lever" aria-label="Pull the lever to spin">
+        <span class="word">Pull</span>
+        <span class="track"><span class="knob"></span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="ticker" id="ticker" role="log" aria-live="polite">
+    <div class="line">READY. PULL THE LEVER TO DRAW THREE UNAFFILIATED TOPICS.</div>
+  </div>
+
+  <div class="notice" id="notice"></div>
+
+  <div class="controls">
+    <span class="badge" id="modeBadge">CONNECTING…</span>
+    <span class="badge" id="sepBadge">MIN SEPARATION: 4 CLICKS</span>
+  </div>
+
+  <div class="results" id="results">
+    <h2>Your Three Topics</h2>
+    <div class="cards" id="cards"></div>
+    <div class="sepline" id="sepline"></div>
+    <div class="resultbtns">
+      <button class="ui" id="copyBtn">Copy topics</button>
+      <button class="ui" id="logBtn">Log to sheet</button>
+    </div>
+  </div>
+
+  <details class="panel">
+    <summary>Settings</summary>
+    <div class="row">
+      <label for="minSep">Minimum separation</label>
+      <select id="minSep" style="width:auto">
+        <option value="3">3 clicks (exact check)</option>
+        <option value="4" selected>4 clicks (depth-3 sampled)</option>
+        <option value="5">5 clicks (depth-3 sampled)</option>
+      </select>
+      <label style="display:flex;gap:6px;align-items:center;font-size:.72rem">
+        <input type="checkbox" id="soundOn" checked> Sounds
+      </label>
+    </div>
+    <p class="hint">The prototype verifies distance 1–2 exactly via the Wikipedia API and probes distance 3 by sampling. The production build uses the full Six Degrees of Wikipedia graph database for exact answers at any depth.</p>
+    <label for="blocklist">Topic blocklist (matches title &amp; categories, one term per line)</label>
+    <textarea id="blocklist">nazi
+hitler
+holocaust
+september 11
+abortion
+terroris
+genocide
+covid</textarea>
+    <label for="sheetUrl">Google Sheets webhook URL (Apps Script)</label>
+    <input type="url" id="sheetUrl" placeholder="https://script.google.com/macros/s/…/exec">
+    <p class="hint">Paste your deployed Apps Script web-app URL and every logged spin appends a row. Setup steps are in the panel below.</p>
+  </details>
+
+  <details class="panel">
+    <summary>Spin history</summary>
+    <ul class="history-list" id="history"><li>No spins yet.</li></ul>
+    <div style="margin-top:10px"><button class="ui small" id="clearHist">Clear history</button></div>
+  </details>
+
+  <details class="panel">
+    <summary>Connect a Google Sheet (2 minutes)</summary>
+    <p class="hint">1. Create a Google Sheet → Extensions → Apps Script.<br>
+    2. Paste this, save, then Deploy → New deployment → Web app → execute as <b>Me</b>, access <b>Anyone</b>.<br>
+    3. Copy the web-app URL into Settings above.</p>
+<pre>function doPost(e){
+  var s = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  var d = JSON.parse(e.postData.contents);
+  s.appendRow([new Date(), d.t1, d.t2, d.t3, d.minSep, d.mode]);
+  return ContentService.createTextOutput('ok');
+}</pre>
+  </details>
+
+  <details class="panel">
+    <summary>House rules &amp; how the checks work</summary>
+    <p class="hint" style="font-size:.7rem">
+    Every candidate is a live random Wikipedia article, filtered before it can land on a reel:<br><br>
+    · No living people (Wikipedia's "Living people" category)<br>
+    · No politics, politicians, or parties from the last ~100 years (pre-1900 politics allowed)<br>
+    · No blocklisted topics (Nazis, 9/11, abortion, etc. — editable above; wars are fine)<br>
+    · No current events (recent-year titles and event categories rejected)<br>
+    · Article must run 2,000+ words (verified against the full text)<br>
+    · No two topics may share a Wikipedia category<br>
+    · No two topics may be reachable within the minimum click separation, in either link direction<br><br>
+    Rule you enforce yourself: if you already see the connection, hit respin. We want surprise, not confirmation.
+    </p>
+  </details>
+
+  <footer>The Den · Citizen Science Division</footer>
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   THE DISPARATE TOPICS CHALLENGE — prototype
+   Live mode: real Wikipedia API (CORS via origin=*)
+   Demo mode: bundled topics + simulated checks (auto-fallback)
+   ============================================================ */
+
+const API = "https://en.wikipedia.org/w/api.php";
+const MIN_BYTES = 15000;      // first-pass proxy for 2,000+ words
+const MIN_WORDS = 2000;
+const LINK_CAP  = 1500;       // cap per link list
+const REVEAL_GAP = 5000;      // ms between reel reveals (per spec)
+
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+/* ---------- state ---------- */
+let MODE = "connecting";      // live | demo
+let spinning = false;
+let locked = [null,null,null];       // {title, words, extract, cats:Set}
+let pool = [];                       // light-validated candidates
+let filling = false;
+const sepCache = new Map();
+
+/* ---------- demo inventory ---------- */
+const DEMO = [
+"Antikythera mechanism","Bioluminescence","Tulip mania","Great Emu War","Sourdough",
+"Bee waggle dance","Oracle bone script","Cordyceps","Voynich manuscript","Plate tectonics",
+"Trepanning","Silk Road","Murmuration","Alchemy","Fermentation","Norse mythology",
+"Carrier pigeon","Permafrost","Gutenberg press","Coral reef","Falconry","Bog body",
+"Theremin","Cartography","Mycorrhiza","Samurai armor","Lighthouse keeping","Meteorite",
+"Shipwreck of the Essex","Cheese rolling","Aurora borealis","Scrimshaw","Beekeeping",
+"Punic Wars","Terracotta Army","Whale fall","Marginalia","Dendrochronology",
+"Camera obscura","Rogue wave","Basque whaling","Glassblowing","Star sand",
+"Library of Alexandria","Migratory locust","Hedge maze","Ambergris","Knot theory"];
+
+/* ---------- audio ---------- */
+let AC=null;
+function beep(freq,dur,type="square",gain=.05){
+  if(!$("soundOn").checked) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(), g=AC.createGain();
+    o.type=type;o.frequency.value=freq;g.gain.value=gain;
+    o.connect(g);g.connect(AC.destination);
+    o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+dur);
+    o.stop(AC.currentTime+dur);
+  }catch(e){}
+}
+const clack=()=>beep(180,.09,"square",.09);
+const buzz =()=>beep(90,.3,"sawtooth",.07);
+function fanfare(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.22,"triangle",.06),i*110));}
+let tickTimer=null;
+function startTicks(){stopTicks();tickTimer=setInterval(()=>beep(700,.02,"square",.02),120);}
+function stopTicks(){if(tickTimer){clearInterval(tickTimer);tickTimer=null;}}
+
+/* ---------- ticker ---------- */
+function tick(msg,cls){
+  const t=$("ticker");
+  const d=document.createElement("div");
+  d.className="line"+(cls?" "+cls:"");
+  d.textContent=msg.toUpperCase();
+  t.appendChild(d);
+  while(t.children.length>5)t.removeChild(t.firstChild);
+}
+
+/* ---------- wikipedia api ---------- */
+async function wapi(params){
+  const q=new URLSearchParams({action:"query",format:"json",origin:"*",...params});
+  const res=await fetch(API+"?"+q.toString());
+  if(!res.ok)throw new Error("HTTP "+res.status);
+  return res.json();
+}
+
+async function detectMode(){
+  try{
+    const ctl=new AbortController();
+    const to=setTimeout(()=>ctl.abort(),6000);
+    const res=await fetch(API+"?action=query&meta=siteinfo&format=json&origin=*",{signal:ctl.signal});
+    clearTimeout(to);
+    if(res.ok){setMode("live");return;}
+  }catch(e){}
+  setMode("demo");
+}
+function setMode(m){
+  MODE=m;
+  const b=$("modeBadge");
+  if(m==="live"){b.textContent="LIVE · EN.WIKIPEDIA";b.classList.remove("demo");}
+  else{
+    b.textContent="DEMO MODE";b.classList.add("demo");
+    const n=$("notice");
+    n.innerHTML="Wikipedia isn't reachable from this preview sandbox, so the machine is running on a bundled topic list with simulated separation checks. <b>Download this file and open it in any browser</b> — it flips to live mode automatically, pulling real random articles and running real link checks.";
+    n.classList.add("show");
+  }
+}
+
+/* ---------- rule filters ---------- */
+function blockRx(){
+  const terms=$("blocklist").value.split("\n").map(s=>s.trim()).filter(Boolean)
+    .map(s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  return terms.length?new RegExp(terms.join("|"),"i"):null;
+}
+const OLD_ERA=/\bBC\b|\bancient\b|\bmedieval\b|\b(1st|2nd|3rd|[4-9]th|1[0-9]th)[- ]century/i; // pre-1900 politics allowed
+const POLITIC=/politic|election/i;
+const EVENTY=/championship|competition|tournament|season|olympic|cup\b|world cup|festival \d/i;
+
+function passesFilters(page){
+  const title=page.title||"";
+  const cats=(page.categories||[]).map(c=>c.title.replace(/^Category:/,""));
+  const hay=title+" | "+cats.join(" | ");
+  if(page.pageprops&&"disambiguation" in page.pageprops) return false;
+  if((page.length||0)<MIN_BYTES) return false;
+  if(/living people/i.test(hay)) return false;
+  const rx=blockRx(); if(rx&&rx.test(hay)) return false;
+  for(const c of cats){
+    if(POLITIC.test(c)&&!OLD_ERA.test(c)) return false;               // modern politics
+    if(/^Current /i.test(c)) return false;
+    if(/\b20[0-2]\d\b/.test(c)&&EVENTY.test(c)) return false;          // current events
+  }
+  if(/\b20[0-2]\d\b/.test(title)) return false;                        // recent-year titles
+  return true;
+}
+
+/* ---------- candidate pipeline ---------- */
+async function fillPool(){
+  if(filling||MODE!=="live")return;
+  filling=true;
+  try{
+    while(pool.length<8){
+      const r=await wapi({list:"random",rnnamespace:0,rnlimit:20,rnfilterredir:"nonredirects"});
+      const titles=r.query.random.map(x=>x.title);
+      const d=await wapi({titles:titles.join("|"),prop:"info|categories|pageprops",
+                          cllimit:"max",clshow:"!hidden"});
+      const pages=Object.values(d.query.pages||{});
+      for(const p of pages){
+        if(passesFilters(p)){
+          pool.push({title:p.title,
+            cats:new Set((p.categories||[]).map(c=>c.title.replace(/^Category:/,"")))});
+        }
+      }
+    }
+  }catch(e){ if(MODE==="live"){tick("api error — switching to demo mode","bad");setMode("demo");} }
+  filling=false;
+}
+
+async function verifyWords(cand){                    // final 2,000-word check
+  if(MODE==="demo")return cand;
+  try{
+    const d=await wapi({titles:cand.title,prop:"extracts",explaintext:1,exsectionformat:"plain"});
+    const page=Object.values(d.query.pages)[0];
+    const text=(page.extract||"");
+    const words=text.split(/\s+/).filter(Boolean).length;
+    if(words<MIN_WORDS)return null;
+    cand.words=words;
+    cand.extract=text.slice(0,170).trim()+"…";
+    return cand;
+  }catch(e){return null;}
+}
+
+async function nextValidated(){
+  if(MODE==="demo"){
+    const t=DEMO[Math.floor(Math.random()*DEMO.length)];
+    if(locked.some(l=>l&&l.title===t))return nextValidated();
+    return {title:t,words:2000+Math.floor(Math.random()*5500),
+            extract:"Demo topic — live mode pulls the real article intro.",cats:new Set()};
+  }
+  for(let tries=0;tries<40;tries++){
+    if(!pool.length)await fillPool();
+    const cand=pool.shift();
+    if(!cand){await sleep(400);continue;}
+    if(locked.some(l=>l&&l.title===cand.title))continue;
+    tick(`candidate: ${cand.title} — verifying length…`);
+    const ok=await verifyWords(cand);
+    if(ok)return ok;
+    tick(`rejected: under ${MIN_WORDS} words`,"bad");
+  }
+  throw new Error("Couldn't validate a candidate — Wikipedia may be rate-limiting. Try again.");
+}
+
+/* ---------- link graph: separation ---------- */
+async function getLinkSet(title,dir){                 // dir: "out" | "in"
+  const prop=dir==="out"?"links":"linkshere";
+  const px=dir==="out"?"pl":"lh";
+  let params={titles:title,prop,[px+"limit"]:"max",[px+"namespace"]:"0"};
+  if(dir==="in")params.lhshow="!redirect";
+  const set=new Set();let cont=null;
+  for(let i=0;i<3;i++){
+    const d=await wapi({...params,...(cont||{})});
+    for(const p of Object.values(d.query?.pages||{}))
+      for(const l of (p[prop]||[]))set.add(l.title);
+    if(set.size>=LINK_CAP||!d.continue)break;
+    cont=d.continue;
+  }
+  return set;
+}
+function intersect(a,b){const small=a.size<b.size?a:b,big=small===a?b:a;
+  for(const x of small)if(big.has(x))return x;return null;}
+
+async function twoHopOut(title,outSet){               // sampled 2nd-hop frontier
+  const sample=[...outSet].sort(()=>Math.random()-.5).slice(0,40);
+  const frontier=new Set();
+  for(let i=0;i<sample.length;i+=20){
+    const batch=sample.slice(i,i+20);
+    try{
+      const d=await wapi({titles:batch.join("|"),prop:"links",pllimit:"max",plnamespace:"0"});
+      for(const p of Object.values(d.query?.pages||{}))
+        for(const l of (p.links||[]))frontier.add(l.title);
+    }catch(e){}
+    if(frontier.size>4000)break;
+  }
+  return frontier;
+}
+
+/* returns {pass, reason} — pass means shortest path >= minSep (best-effort) */
+async function checkSeparation(a,b,minSep){
+  if(MODE==="demo"){
+    await sleep(900+Math.random()*900);
+    if(Math.random()<0.18){const d=1+Math.floor(Math.random()*(minSep-1));
+      return {pass:false,reason:`path found at ${d} click${d>1?"s":""} (simulated)`};}
+    return {pass:true,reason:`no path within ${minSep-1} clicks (simulated)`};
+  }
+  const key=[a.title,b.title].sort().join("§")+"|"+minSep;
+  if(sepCache.has(key))return sepCache.get(key);
+
+  // shared-category = affiliated, regardless of distance
+  const shared=intersect(a.cats,b.cats);
+  if(shared){const r={pass:false,reason:`shared category — “${shared}”`};sepCache.set(key,r);return r;}
+
+  tick(`mapping links: “${a.title}” ↔ “${b.title}”`);
+  const [aOut,bOut]=await Promise.all([getLinkSet(a.title,"out"),getLinkSet(b.title,"out")]);
+  if(aOut.has(b.title)||bOut.has(a.title)){
+    const r={pass:false,reason:"direct link — 1 click"};sepCache.set(key,r);return r;}
+
+  const [aIn,bIn]=await Promise.all([getLinkSet(a.title,"in"),getLinkSet(b.title,"in")]);
+  const via2=intersect(aOut,bIn)||intersect(bOut,aIn);
+  if(via2){const r={pass:false,reason:`2 clicks via “${via2}”`};sepCache.set(key,r);return r;}
+  if(minSep<=3){const r={pass:true,reason:"≥3 clicks apart (exact)"};sepCache.set(key,r);return r;}
+
+  tick("probing depth 3 (sampled 2-hop frontier)…");
+  const fa=await twoHopOut(a.title,aOut);
+  let via3=intersect(fa,bIn);
+  if(!via3){const fb=await twoHopOut(b.title,bOut);via3=intersect(fb,aIn);}
+  if(via3){const r={pass:false,reason:`3 clicks via “${via3}” (sampled)`};sepCache.set(key,r);return r;}
+  const r={pass:true,reason:`≥${minSep} clicks apart (depth-3 sampled)`};
+  sepCache.set(key,r);return r;
+}
+
+/* ---------- reels & spin flow ---------- */
+function buildStrips(){
+  document.querySelectorAll(".strip").forEach(s=>{
+    const names=[...DEMO].sort(()=>Math.random()-.5).slice(0,12);
+    s.innerHTML=(names.concat(names,names)).map(n=>`<span>${n}</span>`).join("");
+  });
+}
+function reelSpin(i){const r=$("reel"+i);r.classList.remove("locked");r.classList.add("spin");
+  r.querySelector(".face").innerHTML="";}
+function reelLock(i,c){
+  const r=$("reel"+i);r.classList.remove("spin");r.classList.add("locked");
+  r.querySelector(".face").innerHTML=
+    `<span class="idx">Topic ${i+1}</span>
+     <div class="title">${esc(c.title)}</div>
+     <div class="meta">${c.words.toLocaleString()} words</div>`;
+  clack();
+}
+function reelClear(i){const r=$("reel"+i);r.classList.remove("spin","locked");
+  r.querySelector(".face").innerHTML="";}
+const esc=s=>s.replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+async function drawReel(i,minSep){
+  reelSpin(i);
+  const started=Date.now();
+  for(let attempt=1;attempt<=10;attempt++){
+    const cand=await nextValidated();
+    let ok=true;
+    for(let j=0;j<i;j++){
+      tick(`reel ${i+1}: checking separation from “${locked[j].title}”…`);
+      const res=await checkSeparation(cand,locked[j],minSep);
+      if(!res.pass){tick(`✗ ${cand.title}: ${res.reason} — respinning`,"bad");buzz();ok=false;break;}
+      tick(`✓ vs “${locked[j].title}”: ${res.reason}`,"ok");
+    }
+    if(ok){
+      const wait=Math.max(0,(i===0?2000:REVEAL_GAP)-(Date.now()-started));
+      await sleep(wait);
+      locked[i]=cand;reelLock(i,cand);
+      tick(`reel ${i+1} locked: ${cand.title}`,"ok");
+      return;
+    }
+  }
+  throw new Error("Ten respins on one reel — tough pull. Try again or lower the separation.");
+}
+
+async function pull(){
+  if(spinning)return;
+  spinning=true;
+  locked=[null,null,null];
+  $("results").classList.remove("show");
+  $("marquee").classList.add("spinning");$("marquee").classList.remove("won");
+  const lever=$("lever");lever.disabled=true;lever.classList.add("pulled");
+  setTimeout(()=>lever.classList.remove("pulled"),650);
+  const minSep=parseInt($("minSep").value,10);
+  $("sepBadge").textContent=`MIN SEPARATION: ${minSep} CLICKS`;
+  startTicks();
+  tick("— new pull —");
+  fillPool();
+  try{
+    for(let i=0;i<3;i++)await drawReel(i,minSep);
+    stopTicks();fanfare();
+    $("marquee").classList.remove("spinning");$("marquee").classList.add("won");
+    tick("three unaffiliated topics locked. write 2,000+ words. go.","ok");
+    showResults(minSep);
+    saveHistory(minSep);
+  }catch(e){
+    stopTicks();buzz();
+    $("marquee").classList.remove("spinning");
+    tick(e.message,"bad");
+    for(let i=0;i<3;i++)if(!locked[i])reelClear(i);
+  }
+  lever.disabled=false;spinning=false;
+}
+
+/* ---------- results / respin / history / sheet ---------- */
+function wikiUrl(t){return "https://en.wikipedia.org/wiki/"+encodeURIComponent(t.replace(/ /g,"_"));}
+function showResults(minSep){
+  const cards=$("cards");cards.innerHTML="";
+  locked.forEach((c,i)=>{
+    const el=document.createElement("div");el.className="card";
+    el.innerHTML=`<span class="idx">Topic ${i+1}</span>
+      <h3><a href="${wikiUrl(c.title)}" target="_blank" rel="noopener">${esc(c.title)}</a></h3>
+      <p>${esc(c.extract||"")}</p>
+      <div class="meta">${c.words.toLocaleString()} words on wikipedia</div>
+      <button class="ui small respin" data-i="${i}" title="Already see the connection? Respin.">↻ respin</button>`;
+    cards.appendChild(el);
+  });
+  $("sepline").textContent=`separation verified: every pair ≥ ${minSep} clicks apart · no shared categories`;
+  $("results").classList.add("show");
+  cards.querySelectorAll(".respin").forEach(b=>b.onclick=()=>respinOne(+b.dataset.i));
+}
+async function respinOne(i){
+  if(spinning)return;spinning=true;
+  const minSep=parseInt($("minSep").value,10);
+  const lever=$("lever");lever.disabled=true;
+  startTicks();tick(`respin requested on topic ${i+1} — you saw a connection. good instinct.`);
+  const keep=locked[i];locked[i]=null;
+  try{
+    reelSpin(i);
+    for(let attempt=1;attempt<=10;attempt++){
+      const cand=await nextValidated();
+      let ok=true;
+      for(let j=0;j<3;j++){
+        if(j===i||!locked[j])continue;
+        const res=await checkSeparation(cand,locked[j],minSep);
+        if(!res.pass){tick(`✗ ${cand.title}: ${res.reason}`,"bad");ok=false;break;}
+      }
+      if(ok){locked[i]=cand;reelLock(i,cand);tick(`topic ${i+1} now: ${cand.title}`,"ok");break;}
+    }
+    if(!locked[i]){locked[i]=keep;reelLock(i,keep);tick("couldn't beat it — keeping the original","bad");}
+    showResults(minSep);saveHistory(minSep);
+  }catch(e){locked[i]=keep;reelLock(i,keep);tick(e.message,"bad");}
+  stopTicks();lever.disabled=false;spinning=false;
+}
+
+function saveHistory(minSep){
+  const h=JSON.parse(localStorage.getItem("dtc_history")||"[]");
+  h.unshift({when:new Date().toISOString(),topics:locked.map(l=>l.title),minSep,mode:MODE});
+  localStorage.setItem("dtc_history",JSON.stringify(h.slice(0,25)));
+  renderHistory();
+}
+function renderHistory(){
+  const h=JSON.parse(localStorage.getItem("dtc_history")||"[]");
+  const ul=$("history");
+  ul.innerHTML=h.length?h.map(e=>
+    `<li>${new Date(e.when).toLocaleString()} · sep ${e.minSep} · ${e.mode}<br><b>${e.topics.map(esc).join(" · ")}</b></li>`
+  ).join(""):"<li>No spins yet.</li>";
+}
+$("clearHist").onclick=()=>{localStorage.removeItem("dtc_history");renderHistory();};
+
+$("copyBtn").onclick=async()=>{
+  const minSep=$("minSep").value;
+  const txt="THE DISPARATE TOPICS CHALLENGE\n"+
+    locked.map((l,i)=>`${i+1}. ${l.title} — ${wikiUrl(l.title)}`).join("\n")+
+    `\nSeparation: every pair ≥${minSep} Wikipedia clicks apart. Write 2,000+ words.`;
+  try{await navigator.clipboard.writeText(txt);tick("copied to clipboard","ok");}
+  catch(e){tick("copy blocked — select the cards manually","bad");}
+};
+$("logBtn").onclick=async()=>{
+  const url=$("sheetUrl").value.trim();
+  if(!url){tick("no sheet url set — open settings to add one","bad");return;}
+  try{
+    await fetch(url,{method:"POST",mode:"no-cors",
+      body:JSON.stringify({t1:locked[0].title,t2:locked[1].title,t3:locked[2].title,
+        minSep:$("minSep").value,mode:MODE})});
+    tick("spin sent to google sheet","ok");
+  }catch(e){tick("sheet logging failed — check the webhook url","bad");}
+};
+
+/* ---------- boot ---------- */
+buildStrips();
+renderHistory();
+$("lever").onclick=pull;
+detectMode().then(()=>{if(MODE==="live"){tick("connected to en.wikipedia — live mode","ok");fillPool();}
+  else tick("running in demo mode — download the file for live pulls");});
+</script>
+</body>
+</html>
