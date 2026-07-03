@@ -777,6 +777,7 @@ $("logBtn").onclick=async()=>{
   try{
     await fetch(url,{method:"POST",mode:"no-cors",
       body:JSON.stringify({t1:locked[0].title,t2:locked[1].title,t3:locked[2].title,
+        u1:wikiUrl(locked[0].title),u2:wikiUrl(locked[1].title),u3:wikiUrl(locked[2].title),
         minSep:$("minSep").value,mode:MODE})});
     tick("spin sent to google sheet","ok");
   }catch(e){tick("sheet logging failed — check the webhook url","bad");}

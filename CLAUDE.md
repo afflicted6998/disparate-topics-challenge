@@ -59,15 +59,19 @@ Claude Code cannot do this part (browser auth). Steve:
 function doPost(e){
   var s = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
   var d = JSON.parse(e.postData.contents);
-  s.appendRow([new Date(), d.t1, d.t2, d.t3, d.minSep, d.mode]);
+  s.appendRow([new Date(), d.t1, d.u1, d.t2, d.u2, d.t3, d.u3, d.minSep, d.mode]);
   return ContentService.createTextOutput('ok');
 }
 ```
 2. Deploy → New deployment → Web app → execute as Me, access: Anyone → copy URL.
-3. Paste URL into the app's Settings panel. (Header row: timestamp, t1, t2, t3, minSep, mode.)
-Note: the webhook URL ships in client-side settings per user, not hardcoded —
-if Steve wants ALL public visitors logging to HIS sheet, hardcode the URL as
-the default value of `#sheetUrl` in index.html before deploying. Ask him.
+3. Paste URL into the app's Settings panel. (Header row: timestamp, t1, u1, t2, u2, t3, u3, minSep, mode.)
+
+STATUS (2026-07-03): done — deployed live at
+https://afflicted6998.github.io/disparate-topics-challenge/. Steve chose to
+hardcode the webhook URL as the default value of `#sheetUrl` in index.html so
+ALL public visitors log to his one shared sheet automatically (no per-visitor
+setup). If the webhook URL ever changes, update the `value=` attribute on the
+`#sheetUrl` input in index.html and re-push.
 
 ## Step 5 — VERIFY after deploy
 Open the public URL: badge must read "LIVE · EN.WIKIPEDIA" (demo badge means
