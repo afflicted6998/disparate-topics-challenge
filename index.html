@@ -376,7 +376,7 @@ covid</textarea>
     · No politics, politicians, or parties from the last ~100 years (pre-1900 politics allowed)<br>
     · No blocklisted topics (Nazis, 9/11, abortion, etc. — editable above; wars are fine)<br>
     · No current events (recent-year titles and event categories rejected)<br>
-    · Article must run 2,000+ words (verified against the full text)<br>
+    · Article must run 3,000+ words (verified against the full text)<br>
     · No two topics may share a Wikipedia category<br>
     · No two topics may be reachable within the minimum click separation, in either link direction<br><br>
     Rule you enforce yourself: if you already see the connection, hit respin. We want surprise, not confirmation.
@@ -395,8 +395,8 @@ covid</textarea>
    ============================================================ */
 
 const API = "https://en.wikipedia.org/w/api.php";
-const MIN_BYTES = 15000;      // first-pass proxy for 2,000+ words
-const MIN_WORDS = 2000;
+const MIN_BYTES = 22500;      // first-pass proxy for 3,000+ words
+const MIN_WORDS = 3000;
 const LINK_CAP  = 1500;       // cap per link list
 const REVEAL_GAP = 5000;      // ms between reel reveals (per spec)
 
@@ -532,7 +532,7 @@ async function fillPool(){
   filling=false;
 }
 
-async function verifyWords(cand){                    // final 2,000-word check
+async function verifyWords(cand){                    // final 3,000-word check
   if(MODE==="demo")return cand;
   try{
     const d=await wapi({titles:cand.title,prop:"extracts",explaintext:1,exsectionformat:"plain"});
@@ -550,7 +550,7 @@ async function nextValidated(){
   if(MODE==="demo"){
     const t=DEMO[Math.floor(Math.random()*DEMO.length)];
     if(locked.some(l=>l&&l.title===t))return nextValidated();
-    return {title:t,words:2000+Math.floor(Math.random()*5500),
+    return {title:t,words:MIN_WORDS+Math.floor(Math.random()*4500),
             extract:"Demo topic — live mode pulls the real article intro.",cats:new Set()};
   }
   for(let tries=0;tries<40;tries++){
@@ -695,7 +695,7 @@ async function pull(){
     for(let i=0;i<3;i++)await drawReel(i,minSep);
     stopTicks();fanfare();
     $("marquee").classList.remove("spinning");$("marquee").classList.add("won");
-    tick("three unaffiliated topics locked. write 2,000+ words. go.","ok");
+    tick("three unaffiliated topics locked. write 3,000+ words. go.","ok");
     showResults(minSep);
     saveHistory(minSep);
   }catch(e){
@@ -767,7 +767,7 @@ $("copyBtn").onclick=async()=>{
   const minSep=$("minSep").value;
   const txt="THE DISPARATE TOPICS CHALLENGE\n"+
     locked.map((l,i)=>`${i+1}. ${l.title} — ${wikiUrl(l.title)}`).join("\n")+
-    `\nSeparation: every pair ≥${minSep} Wikipedia clicks apart. Write 2,000+ words.`;
+    `\nSeparation: every pair ≥${minSep} Wikipedia clicks apart. Write 3,000+ words.`;
   try{await navigator.clipboard.writeText(txt);tick("copied to clipboard","ok");}
   catch(e){tick("copy blocked — select the cards manually","bad");}
 };

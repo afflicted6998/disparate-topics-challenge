@@ -91,7 +91,9 @@ No living people; no politics/politicians/parties active in the last ~100 years
 (pre-1900, ancient, medieval allowed — 1900–1926 is over-blocked by design since
 century categories can't split it); no Nazis/9-11/abortion/genocide/terrorism/
 covid (editable blocklist; wars allowed); no current events (recent-year titles,
-year+event categories); 2,000+ words verified against full text; no two topics
+year+event categories); 3,000+ words verified against full text (raised from
+2,000 on 2026-07-03 — sampling showed ~40% of otherwise-eligible articles clear
+2,000 words vs ~24% for 3,000; still a large absolute pool); no two topics
 sharing a category; every pair ≥ minSep clicks apart in either link direction
 (1–2 exact, 3 sampled client-side). "Don't pre-solve" is human-enforced via
 per-reel respin buttons.

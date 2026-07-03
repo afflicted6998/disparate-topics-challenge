@@ -1,5 +1,5 @@
 # The Disparate Topics Challenge — Slot Machine
-Pull the lever, get 3 genuinely unaffiliated Wikipedia topics, write 2,000+ words.
+Pull the lever, get 3 genuinely unaffiliated Wikipedia topics, write 3,000+ words.
 A citizen-science writing experiment from The Den.
 
 **Run it:** open `index.html` in any browser (or visit the hosted URL). No build, no backend.

@@ -1,8 +1,8 @@
 // Disparate Topics Challenge — rules engine (source of truth)
 // Mirrored inline in index.html; keep in sync.
 
-export const MIN_BYTES = 15000;
-export const MIN_WORDS = 2000;
+export const MIN_BYTES = 22500;
+export const MIN_WORDS = 3000;
 
 export const DEFAULT_BLOCKLIST = [
   "nazi","hitler","holocaust","september 11","abortion","terroris","genocide","covid"
