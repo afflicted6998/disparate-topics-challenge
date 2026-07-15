@@ -1,0 +1,92 @@
+{
+  "name": "Resident Essayist (Museum of Needless Connection)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Resident Essayist — setup (2 minutes)\n\n1. Create a credential: **Header Auth** → name `Anthropic x-api-key`,\n   header name `x-api-key`, value = your Anthropic API key\n   (console.anthropic.com → API keys).\n2. Select that credential on the **Call Claude** node.\n3. Activate the workflow, copy the **Production URL** from the\n   Webhook node, and paste it into the museum's committee bylaws\n   (Settings → \"Resident essayist\"), or hardcode it as the\n   `value=` of `#essayistUrl` in museum/index.html.\n\nContract: POST {topics:[a,b,c], maxWords:500} → {essay, quote}.\nCORS is open (*) so the GitHub Pages site can call it.\nCost: one Sonnet call per commission — pennies.",
+        "height": 360,
+        "width": 420
+      },
+      "id": "note-setup",
+      "name": "Setup notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-200, -80]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "resident-essayist",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-in",
+      "name": "Commission received",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 40]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  model: 'claude-sonnet-5',\n  max_tokens: 1500,\n  messages: [{\n    role: 'user',\n    content: 'Can you weave an essay that is factually accurate that somehow ties together these three topics into a larger commentary about modern society.\\n1. ' + $json.body.topics[0] + '\\n2. ' + $json.body.topics[1] + '\\n3. ' + $json.body.topics[2] + '\\n\\nHard limit: ' + ($json.body.maxWords || 500) + ' words. Give the essay a title on its own first line. Do not invent facts; if a claim is uncertain, soften it honestly. End with a genuine synthesis, not a summary.\\n\\nRespond with ONLY valid JSON, no markdown fences: {\"essay\": \"<title line, blank line, then the full essay with \\\\n\\\\n between paragraphs>\", \"quote\": \"<one framable sentence copied verbatim from the essay>\"}'\n  }]\n}) }}",
+        "options": {}
+      },
+      "id": "call-claude",
+      "name": "Call Claude",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 40]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Claude was asked for pure JSON, but parse defensively.\nconst text = $json.content?.[0]?.text ?? '';\nlet essay = '', quote = '';\ntry {\n  const cleaned = text.replace(/^```(json)?\\s*/i, '').replace(/```\\s*$/, '').trim();\n  const parsed = JSON.parse(cleaned);\n  essay = parsed.essay || '';\n  quote = parsed.quote || '';\n} catch (e) {\n  essay = text.trim();\n}\nif (!essay) essay = 'The resident essayist stared at the wall and produced nothing. Commission again.';\nreturn [{ json: { essay, quote } }];"
+      },
+      "id": "parse-reply",
+      "name": "Parse the manuscript",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 40]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ essay: $json.essay, quote: $json.quote }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          }
+        }
+      },
+      "id": "webhook-out",
+      "name": "Deliver the essay",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [920, 40]
+    }
+  ],
+  "connections": {
+    "Commission received": { "main": [[{ "node": "Call Claude", "type": "main", "index": 0 }]] },
+    "Call Claude": { "main": [[{ "node": "Parse the manuscript", "type": "main", "index": 0 }]] },
+    "Parse the manuscript": { "main": [[{ "node": "Deliver the essay", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

@@ -253,14 +253,29 @@ header nav a:hover{color:var(--red)}
 .poll-results div{display:grid;grid-template-columns:110px 1fr 44px;gap:.5rem;align-items:center;font-size:.62rem;font-family:var(--mono)}
 .poll-results i{height:8px;background:linear-gradient(90deg,var(--red) var(--result),rgba(32,33,30,.12) var(--result))}
 
-/* permanent collection */
-.collection-list{margin:2rem 0 0;padding:0;list-style:none}
-.collection-list li{padding:1rem 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:1.4rem;align-items:baseline}
-.collection-list .when{font-family:var(--mono);font-size:.6rem;color:#6e685c;white-space:nowrap}
-.collection-list b{font-family:var(--serif);font-size:1.05rem;font-weight:500}
-.collection-list small{display:block;margin-top:.2rem;color:#6e685c;font-family:var(--mono);font-size:.62rem}
-.collection-list .words{font-family:var(--mono);font-size:.62rem;color:var(--green);white-space:nowrap}
+/* permanent collection — framed quotes */
+.quote-frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.6rem;margin-top:2.4rem}
+.quote-frame{display:flex;flex-direction:column;text-align:left;padding:0;border:8px solid var(--ink);outline:1px solid var(--paper-light);outline-offset:-12px;
+  background:var(--paper-light);box-shadow:var(--shadow);cursor:pointer;transition:transform .25s}
+.quote-frame:hover{transform:translateY(-5px) rotate(-.5deg)}
+.quote-frame blockquote{flex:1;margin:0;padding:1.6rem 1.4rem 1rem;font-family:var(--serif);font-style:italic;font-size:1.05rem;line-height:1.5}
+.quote-frame blockquote::before{content:'“';display:block;color:var(--red);font-size:2.6rem;line-height:.4;margin-bottom:.5rem}
+.quote-frame .frame-card{margin:.9rem;padding:.6rem .8rem;border-left:5px solid var(--red);background:#e9dfc6}
+.quote-frame .frame-card b{display:block;font-family:var(--serif);font-size:.86rem;font-weight:700}
+.quote-frame .frame-card small{display:block;margin-top:.25rem;color:#6e685c;font-family:var(--mono);font-size:.56rem;line-height:1.6}
+.quote-frame .founding{color:var(--red);font-family:var(--mono);font-size:.54rem;font-weight:800;letter-spacing:.14em}
 .collection-empty{color:#6e685c;font-family:var(--mono);font-size:.68rem}
+
+/* essay dialog */
+.essay-dialog{width:min(760px,calc(100% - 2rem));max-height:86vh;padding:clamp(1.5rem,5vw,3rem);border:1px solid var(--ink);
+  background:var(--paper-light);box-shadow:0 30px 90px rgba(0,0,0,.35)}
+.essay-dialog::backdrop{background:rgba(32,33,30,.75);backdrop-filter:blur(6px)}
+.essay-dialog h2{margin:.2rem 0 .4rem;font-family:var(--serif);font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.1}
+.essay-dialog .essay-meta{font-family:var(--mono);font-size:.6rem;color:#6e685c;letter-spacing:.06em}
+.essay-dialog .essay-body{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--line);
+  font-family:var(--serif);font-size:1rem;line-height:1.75;white-space:pre-wrap}
+.dialog-close{position:absolute;right:1rem;top:1rem;width:38px;height:38px;border:1px solid var(--ink);background:transparent;font-size:1.4rem;cursor:pointer}
+.dialog-close:hover{background:var(--ink);color:var(--paper-light)}
 
 /* gift shop */
 .giftshop{background:var(--paper-light);border-top:1px solid var(--ink)}
@@ -430,6 +445,9 @@ genocide
 covid</textarea>
           <label for="sheetUrl">Registrar’s ledger (Google Sheets webhook URL)</label>
           <input type="url" id="sheetUrl" placeholder="https://script.google.com/macros/s/…/exec" value="https://script.google.com/macros/s/AKfycbw1iyaLwuZf9Jn_LuLzDbeQt5KlLE3Yvvd-4RhpAE0Ke-9vgbnLXNeTJGaQW5A6FyLB/exec">
+          <label for="essayistUrl">Resident essayist (n8n webhook URL — see repo README)</label>
+          <input type="url" id="essayistUrl" placeholder="https://your-n8n-host/webhook/resident-essayist">
+          <p class="hint">The essayist is an AI kept on retainer server-side (your API key never enters this page). POST contract: <b>{topics:[a,b,c], maxWords:500}</b> → JSON <b>{essay, quote}</b>, CORS open. An importable n8n workflow ships in <b>tools/n8n-resident-essayist.json</b>. Once your endpoint is stable, hardcode it as this input’s <b>value=</b> — same pattern as the ledger above.</p>
           <p class="hint">Same ledger as the main slot machine — annex acquisitions are filed with mode “museum”. Rules match the Disparate Topics Challenge exactly: no living people, no politics active in the last ~100 years, no current events, 3,000+ documented words, no shared categories, every pair ≥ the registrar standard in either link direction (1–2 exact, 3 sampled).</p>
         </details>
       </div>
@@ -517,6 +535,7 @@ covid</textarea>
         <div class="desk-head"><span>EXHIBITION ESSAY · <b id="deskTopics">NO ARTIFACTS YET</b></span><span id="saveState">DRAFT SAVED LOCALLY</span></div>
         <textarea id="essay" spellcheck="true" placeholder="The visitor will want to know why these three things share a wall. Begin anywhere except an apology…"></textarea>
         <div class="desk-actions">
+          <button id="commissionEssay" type="button">Commission the resident essayist (≤500 words)</button>
           <button class="primary" id="fileExhibition" type="button">File in the permanent collection</button>
           <button id="downloadEssay" type="button">Export essay (.txt)</button>
           <button id="logRegistrar" type="button">Log acquisition to the ledger</button>
@@ -552,7 +571,8 @@ covid</textarea>
   <section id="collection" class="wrap section">
     <p class="label">Archive level · The permanent collection</p>
     <h2 class="display">Exhibitions already committed</h2>
-    <ul class="collection-list" id="collectionList"><li class="collection-empty">Nothing has been filed. The permanent collection is, for now, a rumor.</li></ul>
+    <p style="max-width:640px;color:#5f5b52;font-family:var(--serif);font-size:1.1rem">Each filed exhibition hangs as its most framable sentence. Click a frame to read the full wall essay. Select a passage in your draft before filing to choose the quote yourself; otherwise the registrar picks one.</p>
+    <div class="quote-frames" id="collectionList"><p class="collection-empty">Nothing has been filed. The permanent collection is, for now, a rumor.</p></div>
     <div style="margin-top:1.4rem"><button class="plain-button" id="clearCollection" type="button">Deaccession everything</button></div>
   </section>
 
@@ -582,6 +602,14 @@ covid</textarea>
     <div class="footer-stamp">NO<br>PRIOR<br>ACQUAINTANCE</div>
   </div>
 </footer>
+
+<dialog id="essayDialog" class="essay-dialog">
+  <button class="dialog-close" type="button" aria-label="Close">×</button>
+  <p class="label" style="margin-bottom:.4rem">Permanent collection · wall essay</p>
+  <h2 id="essayDialogTitle"></h2>
+  <p class="essay-meta" id="essayDialogMeta"></p>
+  <div class="essay-body" id="essayDialogBody"></div>
+</dialog>
 
 <script>
 "use strict";
@@ -1074,31 +1102,130 @@ $("downloadEssay").addEventListener("click",()=>{
   a.click();URL.revokeObjectURL(a.href);
 });
 
+/* ---------- the founding acquisition (seeds the collection) ---------- */
+const FOUNDING={
+  founding:true,
+  when:"2026-07-15T00:00:00.000Z",
+  thesisTitle:"Nobody Puts Ketchup on a Hot Dog: Three Small Facts and One Large Truth",
+  topics:["Hot dogs with ketchup only","Pineapple on pizza","Men as they age really get into birds"],
+  byline:"The Resident Essayist, on the founding trio of the main building",
+  quote:"The arc from the ketchup line to the bird feeder is, if you’re lucky, the arc of a life: from performing taste to receiving the world.",
+  essay:`Take three fragments of modern life, each too small to mean anything on its own: a condiment rule, a pizza topping, and a man in his fifties standing motionless in his backyard at dawn. None of them explains itself. But hold each against the others — let the parts interrogate the whole and the whole re-illuminate the parts — and a picture of contemporary society comes into focus that no single fragment could produce.
+
+Start with the hot dog. In the United States, ketchup on a hot dog is not merely a preference; it is a violation. The National Hot Dog and Sausage Council's etiquette guidance holds that adults shouldn't put ketchup on a hot dog — mustard, relish, onions, chili, fine, but ketchup is for children. Chicago enshrined this as civic law of the unwritten kind: the classic Chicago dog is "dragged through the garden" with mustard, neon relish, onions, tomato, pickle, sport peppers, and celery salt, and the omission of ketchup is the whole point. Clint Eastwood's Harry Callahan put it plainly in Sudden Impact: nobody puts ketchup on a hot dog. Notice what's odd here. The stakes are zero. The tube steak does not suffer. And yet the rule is enforced with theatrical seriousness, passed down like doctrine, performed in public. A rule this trivial, held this firmly, cannot be about flavor. It is a membership test.
+
+Now the pineapple. Hawaiian pizza was invented in 1962 not in Hawaii but in Chatham, Ontario, by Sam Panopoulos, a Greek immigrant who tipped canned pineapple onto a pie at his Satellite Restaurant mostly to see what would happen. Sixty years later, this modest experiment had escalated to the level of heads of state: in 2017, the president of Iceland joked that he would ban pineapple on pizza if he could — and then had to clarify, in a statement, that presidents should not hold such power. Gordon Ramsay has litigated the question on television. Italians treat it as a matter of national defense. The remarkable thing about the pineapple war is that it is fought almost entirely by people who are under no obligation to eat the pizza. One could simply order something else. Instead, the preference gets converted into a position, the position into an identity, and the identity into content.
+
+Here the two parts start to disclose the whole. We live in the first era in human history where, for most people in wealthy societies, food is not a survival problem. When scarcity ends, consumption doesn't stop meaning things — it starts meaning more. The sociologist Pierre Bourdieu spent a career showing that taste is never just taste; it's a signal, a way of sorting ourselves into tribes and ranks. What's new isn't the sorting. What's new is the desperation of the material. Previous generations could distinguish themselves through religion, region, trade, class. In a flattened, online, post-scarcity culture, we're left performing identity through condiments. The ketchup rule and the pineapple war are the same phenomenon: low-stakes orthodoxies, manufactured precisely because they cost nothing to hold, defended loudly because the loudness is the product. Opinion has become the cheapest available raw material for the self.
+
+Which brings us to the birds — and the third fragment, read against that whole, turns out to be the counter-argument. It is a documented pattern, not just a meme, that birdwatching skews older: federal wildlife-recreation surveys have long shown participation rising with age, and the pandemic years produced a measurable surge, with Cornell's Merlin identification app and eBird platform seeing explosive growth as millions of people, stuck at home, suddenly noticed the feeder. The joke writes itself — dad got binoculars, dad is now unreachable before 9 a.m. But look at what the activity actually demands. Birding is the structural inverse of the condiment wars. It requires silence rather than declaration. Patience rather than escalation. The cardinal does not care about your take, and no amount of confident opining will make a warbler appear. Psychologists have a name for part of what's happening: socioemotional selectivity, the well-studied tendency for people, as their time horizon shortens, to reallocate attention away from status-seeking and toward what is emotionally and presently meaningful. The man who at thirty-five had strong public feelings about pineapple is, at sixty, learning to tell a house finch from a purple finch — a distinction that cannot be argued, only seen.
+
+So return, one last time, from the parts to the whole. Read together, these three facts sketch both a cultural condition and its exit. The condition: a society drowning in judgment, where the abundance of everything has made opinion the default mode of participation, and where we ritualize trivial rules because real belonging has gotten harder to find. The exit: attention. Not better arguments, not more refined taste, not winning the pizza discourse — just the slow, unfashionable practice of looking at something that was never asking for your opinion. The arc from the ketchup line to the bird feeder is, if you're lucky, the arc of a life: from performing taste to receiving the world.
+
+The practical upshot is almost embarrassingly simple. Eat the hot dog however you like. Order the pizza or don't. And when the argument starts, consider that the quietest man at the party — the one who left early because something is migrating this week — may be the only one who's figured out what all that noise was compensating for.`
+};
+FOUNDING.words=FOUNDING.essay.split(/\s+/).filter(Boolean).length;
+function seedCollection(){
+  if(localStorage.getItem("mncw-collection")===null)
+    localStorage.setItem("mncw-collection",JSON.stringify([FOUNDING]));
+}
+
+/* ---------- pull-quote selection ---------- */
+function pickQuote(text){
+  const sentences=(text.match(/[^.!?\n]+[.!?]+["”’]?/g)||[]).map(s=>s.trim());
+  const candidates=sentences
+    .map((s,i)=>({s,i}))
+    .filter(({s})=>s.length>=80&&s.length<=240);
+  if(!candidates.length)return text.slice(0,180).trim()+(text.length>180?"…":"");
+  // favor late-essay sentences (where essays land their point) and framable punctuation
+  const scored=candidates.map(({s,i})=>({s,score:(i/sentences.length)*2+(/[—:;]/.test(s)?.6:0)+(/\b(we|life|world|society|attention)\b/i.test(s)?.4:0)}));
+  scored.sort((a,b)=>b.score-a.score);
+  return scored[0].s;
+}
+function selectedQuote(){
+  const el=$("essay");
+  const sel=el.value.slice(el.selectionStart,el.selectionEnd).trim();
+  return (sel.length>=20&&sel.length<=300)?sel:null;
+}
+
+/* ---------- the resident essayist (server-side AI, key never in page) ---------- */
+let commissioned=false;
+$("essayistUrl").value=localStorage.getItem("mncw-essayist-url")||"";
+$("essayistUrl").addEventListener("change",()=>localStorage.setItem("mncw-essayist-url",$("essayistUrl").value.trim()));
+$("commissionEssay").addEventListener("click",async()=>{
+  if(locked.some(l=>!l)){minute("the essayist requires a full wall — convene the committee first","bad");
+    $("acquisition").scrollIntoView({behavior:"smooth"});return;}
+  const url=$("essayistUrl").value.trim();
+  if(!url){minute("no essayist on retainer — add the n8n webhook url in the committee bylaws (recipe: tools/n8n-resident-essayist.json)","bad");return;}
+  if($("essay").value.trim()&&!confirm("The desk holds a draft. Let the resident essayist overwrite it?"))return;
+  const btn=$("commissionEssay");btn.disabled=true;btn.textContent="The essayist is typing…";
+  minute("commission dispatched to the resident essayist — 500 words, factual, no mercy");
+  try{
+    const res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({topics:locked.map(l=>l.title),maxWords:500})});
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    let essay="",quote="";
+    const raw=await res.text();
+    try{const j=JSON.parse(raw);essay=j.essay||"";quote=j.quote||"";}catch(e){essay=raw;}
+    if(!essay.trim())throw new Error("empty reply");
+    $("essay").value=essay.trim();
+    commissioned=true;
+    currentQuote=quote.trim()||null;
+    updateDesk();
+    $("essay").dispatchEvent(new Event("input"));
+    minute(`the essayist delivered ${essayWords().toLocaleString()} words — edit freely or file as-is`,"ok");
+    $("desk").scrollIntoView({behavior:"smooth"});
+  }catch(e){
+    minute(`the essayist is unreachable (${e.message}) — check the webhook url and its CORS setting`,"bad");
+  }
+  btn.disabled=false;btn.textContent="Commission the resident essayist (≤500 words)";
+});
+let currentQuote=null;
+
 /* ---------- permanent collection ---------- */
 function renderCollection(){
   const list=JSON.parse(localStorage.getItem("mncw-collection")||"[]");
-  const ul=$("collectionList");
-  ul.innerHTML=list.length?list.map(e=>
-    `<li><span class="when">${new Date(e.when).toLocaleDateString()}</span>
-     <span><b>${esc(e.thesisTitle||"Untitled exhibition")}</b><small>${e.topics.map(esc).join(" · ")}</small></span>
-     <span class="words">${(e.words||0).toLocaleString()} WORDS</span></li>`).join("")
-    :`<li class="collection-empty">Nothing has been filed. The permanent collection is, for now, a rumor.</li>`;
+  const box=$("collectionList");
+  box.innerHTML=list.length?list.map((e,i)=>
+    `<button class="quote-frame" data-idx="${i}" type="button" title="Read the full wall essay">
+      <blockquote>${esc(e.quote||e.thesisTitle||"An exhibition, unquoted.")}</blockquote>
+      <span class="frame-card">${e.founding?'<span class="founding">FOUNDING ACQUISITION</span>':""}
+        <b>${esc(e.thesisTitle||"Untitled exhibition")}</b>
+        <small>${e.topics.map(esc).join(" · ")}<br>${new Date(e.when).toLocaleDateString()} · ${(e.words||0).toLocaleString()} words${e.byline?" · "+esc(e.byline):""}</small>
+      </span>
+    </button>`).join("")
+    :`<p class="collection-empty">Nothing has been filed. The permanent collection is, for now, a rumor.</p>`;
+  box.querySelectorAll(".quote-frame").forEach(f=>f.addEventListener("click",()=>openEssay(list[+f.dataset.idx])));
 }
+function openEssay(e){
+  if(!e)return;
+  $("essayDialogTitle").textContent=e.thesisTitle||"Untitled exhibition";
+  $("essayDialogMeta").textContent=`${e.topics.join(" · ")} — filed ${new Date(e.when).toLocaleDateString()} · ${(e.words||0).toLocaleString()} words${e.byline?" · "+e.byline:""}`;
+  $("essayDialogBody").textContent=e.essay||"(No essay was filed with this exhibition — only the acquisition record survives.)";
+  $("essayDialog").showModal();
+}
+$("essayDialog").querySelector(".dialog-close").addEventListener("click",()=>$("essayDialog").close());
+$("essayDialog").addEventListener("click",e=>{if(e.target===$("essayDialog"))$("essayDialog").close();});
+
 $("fileExhibition").addEventListener("click",()=>{
   if(locked.some(l=>!l)){minute("nothing to file — the wall is empty. convene the committee first.","bad");
     $("acquisition").scrollIntoView({behavior:"smooth"});return;}
+  const text=$("essay").value.trim();
+  const quote=selectedQuote()||currentQuote||(text?pickQuote(text):null);
   const list=JSON.parse(localStorage.getItem("mncw-collection")||"[]");
   list.unshift({when:new Date().toISOString(),
     topics:locked.map(l=>l.title),
     thesisTitle:currentThesis?currentThesis.split("\n")[0].replace(/^EXHIBITION \d+ — /,""):"Untitled exhibition",
-    words:essayWords(),minSep:$("minSep").value,mode:MODE});
+    words:essayWords(),minSep:$("minSep").value,mode:MODE,
+    essay:text.slice(0,60000),quote:quote||"",
+    byline:text?(commissioned?"The Resident Essayist, as edited by the guest curator":"The guest curator"):""});
   localStorage.setItem("mncw-collection",JSON.stringify(list.slice(0,25)));
   renderCollection();
   $("collection").scrollIntoView({behavior:"smooth"});
 });
 $("clearCollection").addEventListener("click",()=>{
-  if(confirm("Deaccession the entire permanent collection?")){
-    localStorage.removeItem("mncw-collection");renderCollection();
+  if(confirm("Deaccession the entire permanent collection? (The founding acquisition will be re-hung.)")){
+    localStorage.setItem("mncw-collection",JSON.stringify([FOUNDING]));renderCollection();
   }
 });
 
@@ -1144,6 +1271,7 @@ function onExhibitionChange(fresh){
   renderGiftshop();
   $("deskTopics").textContent=locked.map(l=>l.title).join(" · ").toUpperCase();
   if(fresh){
+    commissioned=false;currentQuote=null;
     $("gallery").scrollIntoView({behavior:"smooth"});
     if($("essay").value&&essayWords()>0)
       minute("a previous draft remains at the curator's desk — burn it or keep building","ok");
@@ -1167,6 +1295,7 @@ nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>nav.classLis
 
 /* ---------- boot ---------- */
 renderPoll();
+seedCollection();
 renderCollection();
 restoreDraft();
 detectMode().then(()=>{
