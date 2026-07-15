@@ -11,6 +11,11 @@ Owner: Steve. Voice: get it live, don't over-engineer.
   gallery / curator's desk; also mirrors the rules inline — search `OLD_ERA`)
 - `tools/filters.mjs` — rules engine, SOURCE OF TRUTH (index.html AND
   museum/index.html mirror it; keep all three in sync)
+- `tools/n8n-resident-essayist.json` — importable n8n workflow: webhook →
+  Claude API → JSON reply, powers the museum's AI essay commission (Steve
+  imports it on the Hostinger VPS n8n, adds his Anthropic key as a Header
+  Auth credential, pastes the production URL into the museum bylaws or
+  hardcodes it as `#essayistUrl`'s value=)
 - `tools/test-filters.mjs` — 35 fixture rules audit (`node tools/test-filters.mjs`)
 - `tools/smoke-test.mjs` — headless spin engine, offline + LIVE modes
 
