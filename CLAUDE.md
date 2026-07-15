@@ -6,7 +6,11 @@ Owner: Steve. Voice: get it live, don't over-engineer.
 
 ## Repo contents
 - `index.html` — the entire app (Wikipedia API client-side, all rules inline)
-- `tools/filters.mjs` — rules engine, SOURCE OF TRUTH (index.html mirrors it; keep in sync)
+- `museum/index.html` — West Annex: "The Museum of Needless Connection" (same live
+  Wikipedia engine + separation checks re-skinned as an acquisitions committee /
+  gallery / curator's desk; also mirrors the rules inline — search `OLD_ERA`)
+- `tools/filters.mjs` — rules engine, SOURCE OF TRUTH (index.html AND
+  museum/index.html mirror it; keep all three in sync)
 - `tools/test-filters.mjs` — 35 fixture rules audit (`node tools/test-filters.mjs`)
 - `tools/smoke-test.mjs` — headless spin engine, offline + LIVE modes
 

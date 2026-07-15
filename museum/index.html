@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#efe5ce">
+<meta name="description" content="The Museum of Needless Connection: a West Annex where three certified-unrelated Wikipedia artifacts are hung on one wall and a guest curator must connect them in 3,000 words.">
+<title>The Museum of Needless Connection — West Annex</title>
+<style>
+:root{
+  --paper:#efe5ce;
+  --paper-light:#f8f1df;
+  --ink:#20211e;
+  --red:#b93b31;
+  --blue:#214a61;
+  --green:#3f644e;
+  --mustard:#d3a62d;
+  --machine:#17271f;
+  --line:rgba(32,33,30,.2);
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Courier New',Courier,monospace;
+  --shadow:0 24px 60px rgba(48,37,20,.18);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);background:var(--paper);font-family:var(--sans);line-height:1.55}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-2;
+  background:radial-gradient(circle at 15% 10%,rgba(185,59,49,.09),transparent 26rem),
+             radial-gradient(circle at 85% 20%,rgba(33,74,97,.09),transparent 30rem)}
+.paper-noise{position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.12;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+::selection{background:var(--red);color:#fff}
+.wrap{width:min(1180px,calc(100% - 2rem));margin-inline:auto}
+.section{padding-block:6rem}
+.label{margin:0 0 .8rem;color:var(--red);font-family:var(--mono);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+h2.display{margin:0;font-family:var(--serif);font-size:clamp(2.6rem,5.4vw,5rem);line-height:.95;letter-spacing:-.05em;font-weight:500}
+.skip-link{position:fixed;left:1rem;top:-4rem;z-index:120;background:var(--ink);color:var(--paper);padding:.7rem 1rem}
+.skip-link:focus{top:1rem}
+
+/* header */
+header{min-height:78px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:2rem;
+  padding:.75rem max(1rem,calc((100% - 1260px)/2));position:sticky;top:0;z-index:70;
+  background:rgba(239,229,206,.91);border-bottom:1px solid var(--ink);backdrop-filter:blur(15px)}
+.brand{display:inline-flex;align-items:center;gap:.7rem;text-decoration:none}
+.seal{width:48px;height:48px;flex:none;display:grid;place-items:center;border:2px solid var(--ink);border-radius:50%;
+  font-family:var(--serif);font-weight:900;font-size:.66rem;
+  box-shadow:inset 0 0 0 4px var(--paper),inset 0 0 0 5px var(--ink)}
+.brand strong{display:block;font-family:var(--serif);font-size:.9rem;letter-spacing:.03em}
+.brand small{display:block;color:#6e685c;font-size:.58rem}
+header nav{display:flex;justify-content:center;gap:1.4rem}
+header nav a{text-decoration:none;font-family:var(--mono);font-size:.63rem;font-weight:800;text-transform:uppercase}
+header nav a:hover{color:var(--red)}
+.open-sign{font-family:var(--mono);font-size:.62rem;font-weight:800;white-space:nowrap}
+.open-sign i{display:inline-block;width:8px;height:8px;margin-right:.35rem;border-radius:50%;background:var(--green)}
+.menu-button{display:none;border:1px solid var(--ink);background:transparent;padding:.55rem .7rem;font-family:var(--mono);text-transform:uppercase;font-size:.62rem;cursor:pointer}
+
+/* entrance */
+.entrance{min-height:calc(92vh - 78px);display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center;padding-block:4rem}
+.entrance h1{margin:0;font-family:var(--serif);font-size:clamp(3.4rem,7.4vw,6.8rem);line-height:.9;letter-spacing:-.06em;font-weight:500}
+.entrance h1 em{color:var(--red);font-weight:500}
+.lead{max-width:700px;margin:2rem 0;color:#5f5b52;font-family:var(--serif);font-size:1.25rem}
+.entrance-actions{display:flex;flex-wrap:wrap;gap:.7rem}
+.ink-button{min-height:48px;display:inline-flex;align-items:center;justify-content:space-between;gap:2rem;padding:.75rem 1rem;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper-light);text-decoration:none;
+  font-family:var(--mono);font-size:.68rem;font-weight:800;text-transform:uppercase;cursor:pointer}
+.ink-button:hover{background:var(--red);border-color:var(--red)}
+.plain-button{border:1px solid var(--ink);background:transparent;padding:.75rem 1rem;font-family:var(--mono);font-size:.68rem;font-weight:800;text-transform:uppercase;cursor:pointer}
+.plain-button:hover{background:var(--ink);color:var(--paper-light)}
+.credential{max-width:640px;margin-top:1.5rem;padding:1rem 1.2rem;border:1px dashed var(--ink);position:relative;background:rgba(248,241,223,.55)}
+.credential::before,.credential::after{content:'';position:absolute;width:18px;height:18px;top:50%;border-radius:50%;background:var(--paper);transform:translateY(-50%)}
+.credential::before{left:-10px}.credential::after{right:-10px}
+.credential span,.credential small{display:block;font-family:var(--mono);font-size:.58rem}
+.credential strong{display:block;margin:.3rem 0;font-family:var(--serif);font-size:1.08rem}
+
+.entrance-poster{display:grid;place-items:center}
+.poster{width:min(430px,90vw);aspect-ratio:.72;padding:1.5rem;border:10px solid var(--ink);outline:1px solid var(--paper-light);outline-offset:-16px;
+  color:var(--paper-light);background:var(--blue);box-shadow:var(--shadow);transform:rotate(1.5deg);display:flex;flex-direction:column;text-align:center}
+.poster>p{margin:0;font-family:var(--mono);font-size:.62rem;letter-spacing:.15em}
+.poster-frames{flex:1;min-height:230px;position:relative}
+.poster-frames span{position:absolute;display:grid;place-items:center;border:5px solid var(--paper-light);
+  font-family:var(--serif);font-size:2.6rem;color:var(--paper-light)}
+.pf1{width:34%;height:36%;left:6%;top:9%;transform:rotate(-5deg);background:var(--red)}
+.pf2{width:30%;height:30%;right:8%;top:20%;transform:rotate(6deg);background:var(--green)}
+.pf3{width:38%;height:34%;left:26%;bottom:4%;transform:rotate(-2deg);background:var(--mustard);color:var(--ink);border-color:var(--ink)}
+.poster h2{margin:0;font-family:var(--serif);font-size:clamp(2rem,4.6vw,3.4rem);line-height:.9}
+.poster-footer{display:flex;justify-content:space-between;margin-top:1rem;border-top:1px solid var(--paper-light);padding-top:.7rem;font-family:var(--mono);font-size:.55rem}
+
+/* marquee */
+.marquee{overflow:hidden;border-block:1px solid var(--ink);background:var(--mustard)}
+.marquee div{width:max-content;display:flex;align-items:center;gap:1.5rem;padding:.75rem 0;animation:scroll 34s linear infinite;
+  font-family:var(--mono);font-size:.65rem;font-weight:800;letter-spacing:.08em}
+.marquee b{color:var(--red)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* orientation */
+.orientation{display:grid;grid-template-columns:auto .6fr 1.4fr;gap:2rem;align-items:start}
+.orientation-number{color:var(--red);font-family:var(--serif);font-size:4rem;line-height:.8}
+.orientation-rules{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.orientation-rules article{min-height:170px;padding:1rem;border-top:4px solid var(--ink);background:rgba(248,241,223,.5)}
+.orientation-rules strong{font-family:var(--mono);font-size:.7rem}
+.orientation-rules p{color:#5f5b52}
+
+/* acquisition machine room */
+.machine-room{color:#e7f0e9;background:var(--machine);border-top:1px solid var(--ink)}
+.machine-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:start}
+.machine-room .label{color:var(--mustard)}
+.machine-room h2.display{color:#fff}
+.machine-room .intro p{color:#aab9b0}
+.badges{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.4rem 0}
+.badge{font-family:var(--mono);font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:.45rem .8rem;border:1px solid #607269;border-radius:999px;color:#c9d8ce}
+.badge.demo{border-color:var(--red);color:#e8968b}
+.convene-button{margin-top:.4rem;padding:1rem 1.4rem;border:1px solid var(--mustard);background:transparent;color:var(--mustard);
+  font-family:var(--mono);font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;cursor:pointer}
+.convene-button:hover{color:#fff;background:var(--red);border-color:var(--red)}
+.convene-button:disabled{opacity:.45;cursor:wait}
+.notice{display:none;margin-top:1rem;padding:.8rem 1rem;border:1px solid var(--red);background:rgba(185,59,49,.14);color:#f0b3a7;font-size:.76rem;line-height:1.5}
+.notice.show{display:block}
+.minutes-console{border:1px solid #607269;background:#0f1b16;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.minutes-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.7rem 1rem;border-bottom:1px solid #607269;
+  font-family:var(--mono);font-size:.62rem;font-weight:800;color:#86a18f;text-transform:uppercase;letter-spacing:.1em}
+.minutes-head i{width:8px;height:8px;flex:none;border-radius:50%;background:#3a4f43}
+.working .minutes-head i{background:var(--mustard);box-shadow:0 0 8px 2px rgba(211,166,45,.5);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.minutes{min-height:190px;max-height:260px;overflow-y:auto;padding:1rem 1.2rem;font-family:var(--mono);font-size:.68rem;line-height:1.8;color:#9fb8a8}
+.minutes .line{opacity:.55;white-space:pre-wrap;word-break:break-word}
+.minutes .line:last-child{opacity:1;color:#dce9df}
+.minutes .ok{color:#9fd6b1}
+.minutes .bad{color:#e8968b}
+.machine-settings{border-top:1px solid #607269;padding:1rem 1.2rem}
+.machine-settings summary{cursor:pointer;font-family:var(--mono);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#86a18f;list-style:none}
+.machine-settings summary::before{content:'◆ ';color:var(--mustard)}
+.machine-settings label{display:block;margin:.9rem 0 .3rem;font-family:var(--mono);font-size:.6rem;font-weight:800;text-transform:uppercase;color:#86a18f}
+.machine-settings select,.machine-settings textarea,.machine-settings input[type=url]{width:100%;padding:.55rem;border:1px solid #607269;background:#17271f;color:#dce9df;font-family:var(--mono);font-size:.68rem}
+.machine-settings textarea{min-height:88px;resize:vertical}
+.machine-settings .hint{margin:.35rem 0 0;color:#7f9488;font-size:.62rem;line-height:1.5}
+.machine-settings .row{display:flex;gap:1.2rem;align-items:end;flex-wrap:wrap}
+.machine-settings .row>div{flex:1;min-width:180px}
+.machine-settings .check{display:flex;gap:.45rem;align-items:center;margin:0;padding-bottom:.6rem;text-transform:none;letter-spacing:0}
+
+/* gallery wall */
+.gallery{background:var(--paper-light);border-top:1px solid var(--ink)}
+.gallery-head{display:grid;grid-template-columns:1fr minmax(260px,430px);gap:3rem;align-items:end;margin-bottom:3rem}
+.gallery-head>p{color:#625e54}
+.rail{height:10px;border-block:1px solid var(--ink);margin-bottom:2.6rem;background:repeating-linear-gradient(90deg,transparent 0 26px,rgba(32,33,30,.15) 26px 27px)}
+.frames{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.frame{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--ink);box-shadow:var(--shadow);position:relative}
+.frame::before{content:'';position:absolute;left:50%;top:-2.6rem;width:1px;height:2.6rem;background:var(--ink)}
+.frame .art{aspect-ratio:1/.92;margin:.9rem;border:8px solid var(--ink);outline:1px solid var(--paper-light);outline-offset:-12px;
+  display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background:#d5c9ad;color:#8a8271;
+  font-family:var(--mono);font-size:.62rem;font-weight:800;letter-spacing:.14em}
+.frame.hung .art{color:var(--paper-light)}
+.frame:nth-child(1).hung .art{background:var(--blue)}
+.frame:nth-child(2).hung .art{background:var(--red)}
+.frame:nth-child(3).hung .art{background:var(--green)}
+.frame .art .letter{display:none;font-family:var(--serif);font-size:clamp(4.5rem,9vw,8rem);line-height:1}
+.frame.hung .art .letter{display:block}
+.frame.hung .art .await{display:none}
+.frame.transit .art{background:repeating-linear-gradient(45deg,#d5c9ad 0 16px,#cbbd9c 16px 32px);animation:crate 1.1s linear infinite;color:var(--ink)}
+@keyframes crate{to{background-position:45px 0}}
+.placard{flex:1;margin:0 .9rem .9rem;padding:.8rem 1rem;border-left:5px solid var(--red);background:#e9dfc6}
+.placard .acc{font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;color:#6e685c;text-transform:uppercase}
+.placard h3{margin:.35rem 0 .4rem;font-family:var(--serif);font-size:1.28rem;line-height:1.15}
+.placard h3 a{text-decoration:none;border-bottom:2px solid var(--mustard)}
+.placard h3 a:hover{color:var(--red)}
+.placard p{margin:0;color:#5f5b52;font-size:.76rem}
+.placard .prov{margin-top:.55rem;font-family:var(--mono);font-size:.58rem;color:#6e685c}
+.deaccession{margin:0 .9rem .9rem;align-self:flex-start;border:1px solid var(--ink);background:transparent;padding:.45rem .7rem;
+  font-family:var(--mono);font-size:.58rem;font-weight:800;text-transform:uppercase;cursor:pointer}
+.deaccession:hover{background:var(--ink);color:var(--paper-light)}
+.frame[data-state=idle] .placard,.frame[data-state=idle] .deaccession,
+.frame[data-state=transit] .placard,.frame[data-state=transit] .deaccession{visibility:hidden}
+
+/* certificate */
+.certificate{max-width:760px;margin:3rem auto 0;padding:1.6rem 1.8rem 1.4rem;border:1px dashed var(--ink);background:rgba(248,241,223,.7);position:relative;display:none}
+.certificate.show{display:block}
+.certificate h3{margin:0 0 .2rem;font-family:var(--serif);font-size:1.6rem}
+.certificate>span{font-family:var(--mono);font-size:.58rem;letter-spacing:.16em;color:var(--red);font-weight:800;text-transform:uppercase}
+.certificate ul{margin:.9rem 0 0;padding:0;list-style:none}
+.certificate li{padding:.5rem 0;border-bottom:1px dotted var(--line);font-family:var(--mono);font-size:.66rem;line-height:1.6}
+.certificate li b{color:var(--green)}
+.cert-stamp{position:absolute;right:1.2rem;top:1rem;width:104px;height:104px;display:grid;place-items:center;border:2px solid var(--red);
+  border-radius:50%;color:var(--red);text-align:center;font-family:var(--mono);font-size:.55rem;font-weight:800;transform:rotate(-11deg);opacity:.85}
+
+/* interlude */
+.interlude{color:var(--paper-light);background:var(--red)}
+.interlude-grid{display:grid;grid-template-columns:.4fr 1.3fr .3fr;gap:3rem;align-items:center}
+.interlude .label{color:#f7c3a5}
+.interlude blockquote{margin:0;font-family:var(--serif);font-size:clamp(1.8rem,3.6vw,3.2rem);line-height:1.15}
+.rotunda-seal{width:150px;height:150px;display:grid;place-items:center;border:2px solid var(--paper-light);border-radius:50%;
+  text-align:center;font-family:var(--mono);font-size:.72rem;font-weight:800;transform:rotate(7deg)}
+
+/* placard machine (thesis) */
+.thesis-section{color:#e7f0e9;background:var(--machine)}
+.thesis-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:4rem;align-items:start}
+.thesis-section .label{color:var(--mustard)}
+.thesis-section h2.display{color:#fff}
+.thesis-section .intro p{color:#aab9b0}
+.thesis-console{border:1px solid #607269;background:#0f1b16;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.thesis-controls{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.2rem;border-bottom:1px solid #607269;
+  font-family:var(--mono);font-size:.62rem;font-weight:800;color:#86a18f;text-transform:uppercase;letter-spacing:.1em}
+.thesis-controls button{border:1px solid var(--mustard);background:transparent;color:var(--mustard);padding:.6rem .9rem;
+  font-family:var(--mono);font-size:.64rem;font-weight:800;text-transform:uppercase;cursor:pointer}
+.thesis-controls button:hover{color:var(--machine);background:var(--mustard)}
+.thesis-controls button:disabled{opacity:.4;cursor:default}
+.thesis-output{padding:clamp(1.4rem,5vw,3.2rem);background:#e8dfc9;color:var(--ink)}
+.thesis-number{margin:0;color:var(--red);font-family:var(--mono);font-size:.62rem;font-weight:800;letter-spacing:.12em}
+.thesis-output h3{margin:.5rem 0 1.2rem;font-family:var(--serif);font-size:clamp(1.9rem,3.8vw,3.2rem);line-height:1;letter-spacing:-.03em}
+.thesis-output>p:not(.thesis-number){margin:0;font-family:var(--serif);font-size:1.06rem}
+.thesis-output blockquote{margin:1.4rem 0;padding:1rem;border-left:4px solid var(--green);background:rgba(63,100,78,.1);font-family:var(--serif);font-style:italic}
+.thesis-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.thesis-actions button{padding:.6rem .8rem;border:1px solid var(--ink);background:transparent;font-family:var(--mono);font-size:.62rem;font-weight:800;text-transform:uppercase;cursor:pointer}
+.thesis-actions button:hover{background:var(--ink);color:var(--paper-light)}
+
+/* curator's desk */
+.desk{background:var(--paper-light);border-top:1px solid var(--ink)}
+.desk-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:4rem;align-items:start}
+.desk-side{position:sticky;top:104px}
+.desk-side>p{color:#5f5b52;font-family:var(--serif);font-size:1.1rem}
+.conviction{margin-top:1.6rem;padding:1rem 1.1rem;border-left:4px solid var(--green);background:#e2e4d5}
+.conviction span{color:var(--green);font-family:var(--mono);font-size:.66rem;font-weight:800;letter-spacing:.08em}
+.conviction p{margin:.3rem 0 0;color:#55584e;font-size:.82rem}
+.meter{margin-top:1rem;height:14px;border:1px solid var(--ink);background:var(--paper);position:relative;overflow:hidden}
+.meter i{position:absolute;inset:0;width:0%;background:linear-gradient(90deg,var(--green),var(--mustard) 70%,var(--red));transition:width .4s}
+.meter-caption{display:flex;justify-content:space-between;margin-top:.35rem;font-family:var(--mono);font-size:.58rem;color:#6e685c}
+.desk-paper{border:1px solid var(--ink);background:var(--paper);box-shadow:var(--shadow)}
+.desk-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:.8rem 1rem;border-bottom:1px solid var(--ink);
+  font-family:var(--mono);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.desk-head b{color:var(--red)}
+#essay{display:block;width:100%;min-height:420px;padding:1.4rem;border:0;resize:vertical;background:transparent;
+  font-family:var(--mono);font-size:.84rem;line-height:1.9;outline:none;
+  background-image:repeating-linear-gradient(transparent 0 calc(1.9em - 1px),rgba(32,33,30,.08) calc(1.9em - 1px) 1.9em)}
+.desk-actions{display:flex;gap:.6rem;flex-wrap:wrap;padding:1rem;border-top:1px solid var(--ink)}
+.desk-actions button{padding:.65rem .85rem;border:1px solid var(--ink);background:transparent;font-family:var(--mono);font-size:.62rem;font-weight:800;text-transform:uppercase;cursor:pointer}
+.desk-actions button:hover{background:var(--ink);color:var(--paper-light)}
+.desk-actions button.primary{background:var(--ink);color:var(--paper-light)}
+.desk-actions button.primary:hover{background:var(--red);border-color:var(--red)}
+
+/* referendum */
+.referendum{background:var(--mustard)}
+.referendum-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:4rem;align-items:start}
+.referendum-grid>div>p{color:#5f4e24}
+.verdict-card{padding:1.4rem;border:1px solid var(--ink);background:var(--paper-light);box-shadow:var(--shadow)}
+.verdict-buttons{display:grid;gap:.5rem}
+.verdict-buttons button{padding:.8rem;display:grid;grid-template-columns:150px 1fr;gap:.6rem;border:1px solid var(--ink);background:transparent;text-align:left;cursor:pointer}
+.verdict-buttons button:hover,.verdict-buttons button.selected{background:var(--ink);color:var(--paper-light)}
+.verdict-buttons span{font-family:var(--mono);font-size:.66rem;font-weight:800}
+.verdict-buttons small{opacity:.75}
+.poll-results{display:grid;gap:.45rem;margin-top:1rem}
+.poll-results div{display:grid;grid-template-columns:110px 1fr 44px;gap:.5rem;align-items:center;font-size:.62rem;font-family:var(--mono)}
+.poll-results i{height:8px;background:linear-gradient(90deg,var(--red) var(--result),rgba(32,33,30,.12) var(--result))}
+
+/* permanent collection */
+.collection-list{margin:2rem 0 0;padding:0;list-style:none}
+.collection-list li{padding:1rem 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:1.4rem;align-items:baseline}
+.collection-list .when{font-family:var(--mono);font-size:.6rem;color:#6e685c;white-space:nowrap}
+.collection-list b{font-family:var(--serif);font-size:1.05rem;font-weight:500}
+.collection-list small{display:block;margin-top:.2rem;color:#6e685c;font-family:var(--mono);font-size:.62rem}
+.collection-list .words{font-family:var(--mono);font-size:.62rem;color:var(--green);white-space:nowrap}
+.collection-empty{color:#6e685c;font-family:var(--mono);font-size:.68rem}
+
+/* gift shop */
+.giftshop{background:var(--paper-light);border-top:1px solid var(--ink)}
+.giftshop-head{display:grid;grid-template-columns:1fr minmax(260px,430px);gap:3rem;align-items:end;margin-bottom:2.5rem}
+.giftshop-head>p{color:#625e54}
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.product-grid article{padding:1rem;border:1px solid var(--ink);background:var(--paper)}
+.product-art{min-height:240px;display:grid;place-items:center;margin-bottom:1rem;padding:1.4rem;text-align:center;background:#d5c9ad}
+.product-art span{padding:1.6rem 1.2rem;font-family:var(--mono);font-weight:800;font-size:.78rem;line-height:1.5;word-break:break-word;max-width:100%}
+.product-art.tote span{background:var(--paper-light);border:1px solid var(--ink);box-shadow:0 14px 0 -8px var(--ink)}
+.product-art.postcard span{background:var(--paper-light);border:1px solid var(--ink);transform:rotate(-3deg);font-family:var(--serif);font-weight:500;font-style:italic}
+.product-art.mug span{color:var(--paper-light);background:var(--blue);border-radius:6px 6px 26px 26px;box-shadow:26px 12px 0 -14px var(--blue)}
+.product-grid h3{margin:.5rem 0;font-family:var(--serif);font-size:1.3rem;line-height:1.2}
+.product-grid p{min-height:44px;color:#625e54;font-size:.8rem}
+.product-grid strong{color:var(--red);font-family:var(--mono)}
+.product-grid small{color:#746e63;font-size:.55rem}
+
+footer{padding-block:4rem;color:var(--paper-light);background:var(--ink)}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr auto;gap:2rem;align-items:center}
+.footer-grid strong{font-family:var(--serif)}
+.footer-grid span{color:#e3af55;font-family:var(--mono);font-size:.62rem}
+.footer-grid p{color:#b7b1a4;font-size:.75rem}
+.footer-grid a{color:#e3af55}
+.footer-stamp{width:110px;height:110px;display:grid;place-items:center;border:2px solid var(--red);border-radius:50%;color:#e78b80;
+  text-align:center;font-family:var(--mono);font-size:.66rem;font-weight:800;transform:rotate(-8deg)}
+
+@media(max-width:1030px){
+  header{grid-template-columns:auto auto 1fr}
+  header nav{display:none;position:absolute;top:100%;left:0;right:0;padding:1rem;flex-direction:column;background:var(--paper);border-bottom:1px solid var(--ink)}
+  header nav.open{display:flex}
+  .menu-button{display:block}
+  .open-sign{justify-self:end}
+  .entrance,.machine-grid,.thesis-grid,.desk-grid,.referendum-grid{grid-template-columns:1fr}
+  .entrance-poster{grid-row:1}
+  .orientation{grid-template-columns:auto 1fr}
+  .orientation-rules{grid-column:1/-1}
+  .frames{grid-template-columns:1fr}
+  .frame::before{display:none}
+  .interlude-grid{grid-template-columns:1fr auto}
+  .interlude .label{grid-column:1/-1}
+  .gallery-head,.giftshop-head{grid-template-columns:1fr}
+  .desk-side{position:static}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  .section{padding-block:4.2rem}
+  header{grid-template-columns:1fr auto}
+  .brand small,.open-sign{display:none}
+  .brand strong{font-size:.66rem}
+  .entrance h1{font-size:clamp(3rem,15vw,4.6rem)}
+  .orientation{grid-template-columns:1fr}
+  .orientation-rules{grid-template-columns:1fr}
+  .verdict-buttons button{grid-template-columns:1fr}
+  .product-grid{grid-template-columns:1fr}
+  .collection-list li{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .cert-stamp{position:static;margin:1rem auto 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to the gallery</a>
+<div class="paper-noise" aria-hidden="true"></div>
+
+<header>
+  <a class="brand" href="#entrance">
+    <span class="seal">MNC·W</span>
+    <span><strong>THE MUSEUM OF NEEDLESS CONNECTION</strong><small>West Annex of the Museum of Needless Conviction · Est. three topics ago</small></span>
+  </a>
+  <button class="menu-button" aria-expanded="false" aria-controls="annex-nav" type="button">Directory</button>
+  <nav id="annex-nav">
+    <a href="#acquisition">Acquisitions</a>
+    <a href="#gallery">Gallery Wall</a>
+    <a href="#thesis">Placard Machine</a>
+    <a href="#desk">Curator’s Desk</a>
+    <a href="#collection">Collection</a>
+    <a href="#giftshop">Gift Shop</a>
+  </nav>
+  <div class="open-sign"><i></i> OPEN TO COINCIDENCE</div>
+</header>
+
+<main id="main">
+  <section id="entrance" class="entrance wrap">
+    <div>
+      <p class="label">West Annex · Admission free, thesis compulsory</p>
+      <h1>Unrelated objects.<br><em>Related by force.</em></h1>
+      <p class="lead">The main building preserves oversized certainty about trivial things. This annex puts that certainty to work: an acquisitions committee draws three provably unaffiliated artifacts from the whole of Wikipedia, hangs them on one wall, and appoints a guest curator — you — contractually obligated to connect them in 3,000 words.</p>
+      <div class="entrance-actions">
+        <a class="ink-button" href="#acquisition">Convene the committee <span>→</span></a>
+        <button class="plain-button" id="issueCredential" type="button">Issue my curator credential</button>
+      </div>
+      <div class="credential" id="credential" aria-live="polite">
+        <span>GUEST CURATOR CREDENTIAL</span>
+        <strong>BEARER MAY HANG ANYTHING NEXT TO ANYTHING, ONCE.</strong>
+        <small>Credential no. <b id="credentialNumber">3000</b> · Revoked upon the phrase “they’re actually not that different.”</small>
+      </div>
+    </div>
+    <div class="entrance-poster" aria-label="Illustrated annex poster">
+      <div class="poster">
+        <p>SPECIAL EXHIBITION · ROTATES ON EVERY VISIT</p>
+        <div class="poster-frames" aria-hidden="true"><span class="pf1">?</span><span class="pf2">?</span><span class="pf3">?</span></div>
+        <h2>THREE<br>STRANGERS,<br>ONE WALL</h2>
+        <div class="poster-footer"><span>ARTIFACT</span><span>ARTIFACT</span><span>ALIBI</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="marquee" aria-label="Annex notices">
+    <div><span>EVERY PAIR CERTIFIED ≥ 4 CLICKS APART</span><b>◆</b><span>NO SHARED CATEGORIES · NO SHARED ALIBIS</span><b>◆</b><span>THE REGISTRAR FOUND NOTHING — THE REST IS YOUR PROBLEM</span><b>◆</b><span>PLEASE DO NOT FEED THE COINCIDENCES</span><b>◆</b><span>EVERY PAIR CERTIFIED ≥ 4 CLICKS APART</span><b>◆</b><span>NO SHARED CATEGORIES · NO SHARED ALIBIS</span><b>◆</b><span>THE REGISTRAR FOUND NOTHING — THE REST IS YOUR PROBLEM</span><b>◆</b><span>PLEASE DO NOT FEED THE COINCIDENCES</span><b>◆</b></div>
+  </section>
+
+  <section class="orientation wrap section">
+    <div class="orientation-number">00</div>
+    <div>
+      <p class="label">Curator orientation</p>
+      <h2 class="display">How the annex works</h2>
+    </div>
+    <div class="orientation-rules">
+      <article><strong>ACQUIRE</strong><p>Let the committee draw three artifacts no honest scholar would shelve together. Objections are raised, provenance is searched, strangers are certified.</p></article>
+      <article><strong>CONNECT</strong><p>Write the wall text. The conviction that was needless in the main building is mandatory here — the objects will not connect themselves.</p></article>
+      <article><strong>CONFESS</strong><p>3,000 words minimum, drafted at the curator’s desk. Surprise yourself before you attempt to surprise the reader. If you already see the link, deaccession.</p></article>
+    </div>
+  </section>
+
+  <section id="acquisition" class="machine-room section">
+    <div class="wrap machine-grid">
+      <div class="intro">
+        <p class="label">Basement level · The acquisitions committee</p>
+        <h2 class="display">Three artifacts, no acquaintance</h2>
+        <p>The committee pulls live candidates from English Wikipedia, rejects the living, the political, the current, and the under-documented, then runs a provenance search between every surviving pair. Anything within reach of anything else — a shared category, a link path shorter than the registrar’s standard — is sent back to storage.</p>
+        <div class="badges">
+          <span class="badge" id="modeBadge">CONNECTING…</span>
+          <span class="badge" id="sepBadge">REGISTRAR STANDARD: 4 CLICKS</span>
+        </div>
+        <button class="convene-button" id="convene" type="button">Convene the acquisitions committee</button>
+        <div class="notice" id="notice"></div>
+      </div>
+      <div class="minutes-console" id="console">
+        <div class="minutes-head"><span>COMMITTEE MINUTES · VERBATIM</span><i></i></div>
+        <div class="minutes" id="minutes" role="log" aria-live="polite">
+          <div class="line">THE COMMITTEE IS SEATED. NO ARTIFACTS ARE UNDER CONSIDERATION.</div>
+        </div>
+        <details class="machine-settings">
+          <summary>Committee bylaws (settings)</summary>
+          <div class="row">
+            <div>
+              <label for="minSep">Registrar standard (minimum separation)</label>
+              <select id="minSep">
+                <option value="3">3 clicks (exact check)</option>
+                <option value="4" selected>4 clicks (depth-3 sampled)</option>
+                <option value="5">5 clicks (depth-3 sampled)</option>
+              </select>
+            </div>
+            <label class="check"><input type="checkbox" id="soundOn" checked> Committee sounds</label>
+          </div>
+          <label for="blocklist">Deaccession list (title &amp; category terms, one per line)</label>
+          <textarea id="blocklist">nazi
+hitler
+holocaust
+september 11
+abortion
+terroris
+genocide
+covid</textarea>
+          <label for="sheetUrl">Registrar’s ledger (Google Sheets webhook URL)</label>
+          <input type="url" id="sheetUrl" placeholder="https://script.google.com/macros/s/…/exec" value="https://script.google.com/macros/s/AKfycbw1iyaLwuZf9Jn_LuLzDbeQt5KlLE3Yvvd-4RhpAE0Ke-9vgbnLXNeTJGaQW5A6FyLB/exec">
+          <p class="hint">Same ledger as the main slot machine — annex acquisitions are filed with mode “museum”. Rules match the Disparate Topics Challenge exactly: no living people, no politics active in the last ~100 years, no current events, 3,000+ documented words, no shared categories, every pair ≥ the registrar standard in either link direction (1–2 exact, 3 sampled).</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="gallery section">
+    <div class="wrap">
+      <div class="gallery-head">
+        <div>
+          <p class="label">Main floor · The special exhibition</p>
+          <h2 class="display">The gallery wall</h2>
+        </div>
+        <p>Each artifact arrives with its placard, its accession number, and its certificate. If you can already see the connection, press deaccession — the annex wants surprise, not confirmation.</p>
+      </div>
+      <div class="rail" aria-hidden="true"></div>
+      <div class="frames">
+        <article class="frame" id="frame0" data-state="idle" aria-live="polite">
+          <div class="art"><span class="await">AWAITING<br>ACQUISITION</span><span class="letter" aria-hidden="true"></span></div>
+          <div class="placard"><span class="acc"></span><h3></h3><p></p><div class="prov"></div></div>
+          <button class="deaccession" data-i="0" type="button" title="Already see the connection? Send it back.">↻ Deaccession</button>
+        </article>
+        <article class="frame" id="frame1" data-state="idle" aria-live="polite">
+          <div class="art"><span class="await">AWAITING<br>ACQUISITION</span><span class="letter" aria-hidden="true"></span></div>
+          <div class="placard"><span class="acc"></span><h3></h3><p></p><div class="prov"></div></div>
+          <button class="deaccession" data-i="1" type="button" title="Already see the connection? Send it back.">↻ Deaccession</button>
+        </article>
+        <article class="frame" id="frame2" data-state="idle" aria-live="polite">
+          <div class="art"><span class="await">AWAITING<br>ACQUISITION</span><span class="letter" aria-hidden="true"></span></div>
+          <div class="placard"><span class="acc"></span><h3></h3><p></p><div class="prov"></div></div>
+          <button class="deaccession" data-i="2" type="button" title="Already see the connection? Send it back.">↻ Deaccession</button>
+        </article>
+      </div>
+      <div class="certificate" id="certificate">
+        <span>Office of the registrar</span>
+        <h3>Certificate of Unrelatedness</h3>
+        <ul id="certLines"></ul>
+        <div class="cert-stamp" aria-hidden="true">CERTIFIED<br>UNACQUAINTED</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="interlude section">
+    <div class="wrap interlude-grid">
+      <p class="label">Rotunda inscription, west wing</p>
+      <blockquote>“Conviction about ketchup is a hobby. Conviction that three certified strangers belong in one room — that is a calling.”</blockquote>
+      <div class="rotunda-seal">CONNECT<br>THE<br>UNRELATED</div>
+    </div>
+  </section>
+
+  <section id="thesis" class="thesis-section section">
+    <div class="wrap thesis-grid">
+      <div class="intro">
+        <p class="label">Experimental wing · Machine no. 5</p>
+        <h2 class="display">The Exhibition Placard Machine</h2>
+        <p>Descended from the main building’s Personal Doctrine Generator, this machine drafts an exhibition thesis for whatever three artifacts currently hang on the wall — with the confidence of a tenured pamphleteer and none of the reading. Use it as a starting pistol, a provocation, or a warning.</p>
+      </div>
+      <div class="thesis-console">
+        <div class="thesis-controls"><span>WALL TEXT · DRAFT AUTHORITY: ABSOLUTE</span><button id="generateThesis" type="button" disabled>Reissue the thesis</button></div>
+        <article class="thesis-output" id="thesisOutput">
+          <p class="thesis-number">EXHIBITION — AWAITING ACQUISITION</p>
+          <h3>The Wall Is Currently Honest</h3>
+          <p>No artifacts hang in the annex. Convene the acquisitions committee above, and the machine will draft a unifying thesis for three things that have never heard of one another.</p>
+          <blockquote>Therefore: acquire first. Certainty will be supplied while you wait.</blockquote>
+          <div class="thesis-actions"><button id="copyThesis" type="button" disabled>Copy wall text</button></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="desk" class="desk section">
+    <div class="wrap desk-grid">
+      <div class="desk-side">
+        <p class="label">Staff only · The curator’s desk</p>
+        <h2 class="display">Write the connection into existence</h2>
+        <p>This is where the annex stops being satire. 3,000 words, drafted here or anywhere, until the coincidence blinks first. The desk saves your draft locally as you type and promotes you as the word count climbs.</p>
+        <div class="conviction">
+          <span id="convictionStage">THE EMPTY WALL</span>
+          <p id="convictionText">Every exhibition begins as a blank room and a curator who has promised too much.</p>
+        </div>
+        <div class="meter" role="progressbar" aria-label="Progress toward 3,000 words" aria-valuemin="0" aria-valuemax="3000" aria-valuenow="0" id="meterBar"><i></i></div>
+        <div class="meter-caption"><span id="wordCount">0 WORDS</span><span>3,000 REQUIRED</span></div>
+      </div>
+      <div class="desk-paper">
+        <div class="desk-head"><span>EXHIBITION ESSAY · <b id="deskTopics">NO ARTIFACTS YET</b></span><span id="saveState">DRAFT SAVED LOCALLY</span></div>
+        <textarea id="essay" spellcheck="true" placeholder="The visitor will want to know why these three things share a wall. Begin anywhere except an apology…"></textarea>
+        <div class="desk-actions">
+          <button class="primary" id="fileExhibition" type="button">File in the permanent collection</button>
+          <button id="downloadEssay" type="button">Export essay (.txt)</button>
+          <button id="logRegistrar" type="button">Log acquisition to the ledger</button>
+          <button id="clearEssay" type="button">Burn draft</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="referendum section">
+    <div class="wrap referendum-grid">
+      <div>
+        <p class="label">Department of visiting docents</p>
+        <h2 class="display">The docent referendum</h2>
+        <p>The main building holds tribunals about ketchup. The annex asks the only question its own existence raises. Results are stored in your browser, where all serious scholarship ends up.</p>
+      </div>
+      <div class="verdict-card">
+        <h3 style="margin:0 0 1rem;font-family:var(--serif);font-size:1.8rem">Can three certified strangers be honestly connected?</h3>
+        <div class="verdict-buttons" id="referendum">
+          <button data-answer="made" type="button"><span>YES</span><small>Connection is made, not found — that’s what writing is</small></button>
+          <button data-answer="crime" type="button"><span>NO</span><small>The wall text is a crime scene and the curator did it</small></button>
+          <button data-answer="retires" type="button"><span>ASK AT 3,000</span><small>After 3,000 words the question retires with a pension</small></button>
+        </div>
+        <div class="poll-results" id="pollResults" aria-live="polite">
+          <div><span>Yes, made</span><i style="--result:41%"></i><b>41%</b></div>
+          <div><span>No, crime</span><i style="--result:23%"></i><b>23%</b></div>
+          <div><span>Ask at 3,000</span><i style="--result:36%"></i><b>36%</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="collection" class="wrap section">
+    <p class="label">Archive level · The permanent collection</p>
+    <h2 class="display">Exhibitions already committed</h2>
+    <ul class="collection-list" id="collectionList"><li class="collection-empty">Nothing has been filed. The permanent collection is, for now, a rumor.</li></ul>
+    <div style="margin-top:1.4rem"><button class="plain-button" id="clearCollection" type="button">Deaccession everything</button></div>
+  </section>
+
+  <section id="giftshop" class="giftshop section">
+    <div class="wrap">
+      <div class="giftshop-head">
+        <div>
+          <p class="label">Exit through the gift shop</p>
+          <h2 class="display">Souvenirs of the current exhibition</h2>
+        </div>
+        <p>Merchandise regenerates with every acquisition. These objects are conceptual: the annex lacks inventory, fulfillment, and the administrative stamina to become a real store.</p>
+      </div>
+      <div class="product-grid" id="products">
+        <article><div class="product-art tote"><span>CONTENTS<br>UNRELATED</span></div><h3>The Acquisition Tote</h3><p>Carries three of anything. Guarantees nothing about their relationship.</p><strong>$0.00 <small>institutional fiction</small></strong></article>
+        <article><div class="product-art postcard"><span>Wish it were relevant.</span></div><h3>The Companion Postcard</h3><p>Blank on both sides until the committee convenes.</p><strong>$0.00 <small>institutional fiction</small></strong></article>
+        <article><div class="product-art mug"><span>≥ 4 CLICKS<br>APART</span></div><h3>The Registrar’s Mug</h3><p>For beverages with no documented path to one another.</p><strong>$0.00 <small>institutional fiction</small></strong></article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div><strong>THE MUSEUM OF NEEDLESS CONNECTION</strong><p>West Annex of the Museum of Needless Conviction. Powered by the same engine as <a href="../">The Disparate Topics Challenge</a> — the slot machine remains on view in the main hall.</p></div>
+    <div><span>Hours</span><p>Open whenever three unrelated things need a fourth opinion.</p></div>
+    <div><span>Collection policy</span><p>Artifacts must be strangers. The wall text must pretend otherwise, beautifully.</p></div>
+    <div class="footer-stamp">NO<br>PRIOR<br>ACQUAINTANCE</div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+/* ============================================================
+   THE MUSEUM OF NEEDLESS CONNECTION — West Annex
+   Fusion of the Disparate Topics Challenge engine (live
+   Wikipedia + separation checks) with the Museum of Needless
+   Conviction (galleries, doctrine machine, tribunal, desk).
+   Rules engine mirrors tools/filters.mjs — keep in sync
+   (search for OLD_ERA here and in ../index.html).
+   ============================================================ */
+
+const API = "https://en.wikipedia.org/w/api.php";
+const MIN_BYTES = 22500;      // first-pass proxy for 3,000+ words
+const MIN_WORDS = 3000;
+const LINK_CAP  = 1500;       // cap per link list
+const HANG_GAP  = 1100;       // min ms between frame reveals
+
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const esc = s => String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+/* ---------- state ---------- */
+let MODE = "connecting";              // live | demo
+let acquiring = false;
+let locked = [null,null,null];        // {title, words, extract, cats:Set}
+let pool = [];
+let filling = false;
+const sepCache = new Map();
+const sepEvidence = new Map();        // pairKey -> reason (for the certificate)
+let exhibitionNo = null;
+let currentThesis = "";
+
+/* ---------- demo inventory (matches the main hall) ---------- */
+const DEMO = [
+"Antikythera mechanism","Bioluminescence","Tulip mania","Great Emu War","Sourdough",
+"Bee waggle dance","Oracle bone script","Cordyceps","Voynich manuscript","Plate tectonics",
+"Trepanning","Silk Road","Murmuration","Alchemy","Fermentation","Norse mythology",
+"Carrier pigeon","Permafrost","Gutenberg press","Coral reef","Falconry","Bog body",
+"Theremin","Cartography","Mycorrhiza","Samurai armor","Lighthouse keeping","Meteorite",
+"Shipwreck of the Essex","Cheese rolling","Aurora borealis","Scrimshaw","Beekeeping",
+"Punic Wars","Terracotta Army","Whale fall","Marginalia","Dendrochronology",
+"Camera obscura","Rogue wave","Basque whaling","Glassblowing","Star sand",
+"Library of Alexandria","Migratory locust","Hedge maze","Ambergris","Knot theory"];
+
+/* ---------- audio (inherited from the slot machine downstairs) ---------- */
+let AC=null;
+function beep(freq,dur,type="square",gain=.05){
+  if(!$("soundOn").checked) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(), g=AC.createGain();
+    o.type=type;o.frequency.value=freq;g.gain.value=gain;
+    o.connect(g);g.connect(AC.destination);
+    o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+dur);
+    o.stop(AC.currentTime+dur);
+  }catch(e){}
+}
+const gavel=()=>beep(160,.1,"square",.08);
+const objection=()=>beep(90,.28,"sawtooth",.06);
+function fanfare(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.2,"triangle",.05),i*110));}
+
+/* ---------- committee minutes ---------- */
+function minute(msg,cls){
+  const m=$("minutes");
+  const d=document.createElement("div");
+  d.className="line"+(cls?" "+cls:"");
+  d.textContent=msg.toUpperCase();
+  m.appendChild(d);
+  while(m.children.length>7)m.removeChild(m.firstChild);
+  m.scrollTop=m.scrollHeight;
+}
+
+/* ---------- wikipedia api ---------- */
+async function wapi(params){
+  const q=new URLSearchParams({action:"query",format:"json",origin:"*",...params});
+  const res=await fetch(API+"?"+q.toString());
+  if(!res.ok)throw new Error("HTTP "+res.status);
+  return res.json();
+}
+async function detectMode(){
+  try{
+    const ctl=new AbortController();
+    const to=setTimeout(()=>ctl.abort(),6000);
+    const res=await fetch(API+"?action=query&meta=siteinfo&format=json&origin=*",{signal:ctl.signal});
+    clearTimeout(to);
+    if(res.ok){setMode("live");return;}
+  }catch(e){}
+  setMode("demo");
+}
+function setMode(m){
+  MODE=m;
+  const b=$("modeBadge");
+  if(m==="live"){b.textContent="LIVE · EN.WIKIPEDIA";b.classList.remove("demo");}
+  else{
+    b.textContent="DEMO MODE";b.classList.add("demo");
+    const n=$("notice");
+    n.innerHTML="Wikipedia isn't reachable from here, so the committee is working from a bundled storage room with simulated provenance checks. <b>Open this page with network access</b> and it flips to live mode automatically.";
+    n.classList.add("show");
+  }
+}
+
+/* ---------- rule filters (mirror of tools/filters.mjs) ---------- */
+function blockRx(){
+  const terms=$("blocklist").value.split("\n").map(s=>s.trim()).filter(Boolean)
+    .map(s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  return terms.length?new RegExp(terms.join("|"),"i"):null;
+}
+const OLD_ERA=/\bBC\b|\bancient\b|\bmedieval\b|\b(1st|2nd|3rd|[4-9]th|1[0-9]th)[- ]century/i; // pre-1900 politics allowed
+const POLITIC=/politic|election/i;
+const EVENTY=/championship|competition|tournament|season|olympic|cup\b|world cup/i;
+
+function passesFilters(page){
+  const title=page.title||"";
+  const cats=(page.categories||[]).map(c=>c.title.replace(/^Category:/,""));
+  const hay=title+" | "+cats.join(" | ");
+  if(page.pageprops&&"disambiguation" in page.pageprops) return false;
+  if((page.length||0)<MIN_BYTES) return false;
+  if(/living people/i.test(hay)) return false;
+  const rx=blockRx(); if(rx&&rx.test(hay)) return false;
+  for(const c of cats){
+    if(POLITIC.test(c)&&!OLD_ERA.test(c)) return false;               // modern politics
+    if(/^Current /i.test(c)) return false;
+    if(/\b20[0-2]\d\b/.test(c)&&EVENTY.test(c)) return false;          // current events
+  }
+  if(/\b20[0-2]\d\b/.test(title)) return false;                        // recent-year titles
+  return true;
+}
+
+/* ---------- candidate pipeline ---------- */
+async function fillPool(){
+  if(filling||MODE!=="live")return;
+  filling=true;
+  try{
+    while(pool.length<8){
+      const r=await wapi({list:"random",rnnamespace:0,rnlimit:20,rnfilterredir:"nonredirects"});
+      const titles=r.query.random.map(x=>x.title);
+      const d=await wapi({titles:titles.join("|"),prop:"info|categories|pageprops",
+                          cllimit:"max",clshow:"!hidden"});
+      const pages=Object.values(d.query.pages||{});
+      for(const p of pages){
+        if(passesFilters(p)){
+          pool.push({title:p.title,
+            cats:new Set((p.categories||[]).map(c=>c.title.replace(/^Category:/,"")))});
+        }
+      }
+    }
+  }catch(e){ if(MODE==="live"){minute("api error — the committee retreats to the storage room","bad");setMode("demo");} }
+  filling=false;
+}
+
+async function verifyWords(cand){                    // final 3,000-word check
+  if(MODE==="demo")return Object.assign(cand,{
+    words:MIN_WORDS+Math.floor(Math.random()*4500),
+    extract:"Demo artifact — with network access the committee retrieves the real documentation."});
+  try{
+    const d=await wapi({titles:cand.title,prop:"extracts",explaintext:1,exsectionformat:"plain"});
+    const page=Object.values(d.query.pages)[0];
+    const text=(page.extract||"");
+    const words=text.split(/\s+/).filter(Boolean).length;
+    if(words<MIN_WORDS)return null;
+    cand.words=words;
+    cand.extract=text.slice(0,170).trim()+"…";
+    return cand;
+  }catch(e){return null;}
+}
+
+async function nextValidated(){
+  if(MODE==="demo"){
+    const t=DEMO[Math.floor(Math.random()*DEMO.length)];
+    if(locked.some(l=>l&&l.title===t))return nextValidated();
+    return verifyWords({title:t,cats:new Set()});
+  }
+  for(let tries=0;tries<40;tries++){
+    if(!pool.length)await fillPool();
+    const cand=pool.shift();
+    if(!cand){await sleep(400);continue;}
+    if(locked.some(l=>l&&l.title===cand.title))continue;
+    minute(`under review: ${cand.title} — checking documentation depth…`);
+    const ok=await verifyWords(cand);
+    if(ok)return ok;
+    minute(`returned to storage: documented in under ${MIN_WORDS} words`,"bad");
+  }
+  throw new Error("The committee cannot validate a candidate — Wikipedia may be rate-limiting. Reconvene shortly.");
+}
+
+/* ---------- link graph: separation ---------- */
+async function getLinkSet(title,dir){                 // dir: "out" | "in"
+  const prop=dir==="out"?"links":"linkshere";
+  const px=dir==="out"?"pl":"lh";
+  let params={titles:title,prop,[px+"limit"]:"max",[px+"namespace"]:"0"};
+  if(dir==="in")params.lhshow="!redirect";
+  const set=new Set();let cont=null;
+  for(let i=0;i<3;i++){
+    const d=await wapi({...params,...(cont||{})});
+    for(const p of Object.values(d.query?.pages||{}))
+      for(const l of (p[prop]||[]))set.add(l.title);
+    if(set.size>=LINK_CAP||!d.continue)break;
+    cont=d.continue;
+  }
+  return set;
+}
+function intersect(a,b){const small=a.size<b.size?a:b,big=small===a?b:a;
+  for(const x of small)if(big.has(x))return x;return null;}
+
+async function twoHopOut(title,outSet){               // sampled 2nd-hop frontier
+  const sample=[...outSet].sort(()=>Math.random()-.5).slice(0,40);
+  const frontier=new Set();
+  for(let i=0;i<sample.length;i+=20){
+    const batch=sample.slice(i,i+20);
+    try{
+      const d=await wapi({titles:batch.join("|"),prop:"links",pllimit:"max",plnamespace:"0"});
+      for(const p of Object.values(d.query?.pages||{}))
+        for(const l of (p.links||[]))frontier.add(l.title);
+    }catch(e){}
+    if(frontier.size>4000)break;
+  }
+  return frontier;
+}
+
+function pairKey(a,b){return [a,b].sort().join(" ↔ ");}
+
+/* returns {pass, reason} — pass means shortest path >= minSep (best-effort) */
+async function checkSeparation(a,b,minSep){
+  if(MODE==="demo"){
+    await sleep(700+Math.random()*800);
+    if(Math.random()<0.18){const d=1+Math.floor(Math.random()*(minSep-1));
+      return {pass:false,reason:`path found at ${d} click${d>1?"s":""} (simulated)`};}
+    return {pass:true,reason:`no path within ${minSep-1} clicks (simulated)`};
+  }
+  const key=pairKey(a.title,b.title)+"|"+minSep;
+  if(sepCache.has(key))return sepCache.get(key);
+
+  // shared-category = affiliated, regardless of distance
+  const shared=intersect(a.cats,b.cats);
+  if(shared){const r={pass:false,reason:`shared category — “${shared}”`};sepCache.set(key,r);return r;}
+
+  minute(`provenance search: “${a.title}” ↔ “${b.title}”`);
+  const [aOut,bOut]=await Promise.all([getLinkSet(a.title,"out"),getLinkSet(b.title,"out")]);
+  if(aOut.has(b.title)||bOut.has(a.title)){
+    const r={pass:false,reason:"direct link — 1 click"};sepCache.set(key,r);return r;}
+
+  const [aIn,bIn]=await Promise.all([getLinkSet(a.title,"in"),getLinkSet(b.title,"in")]);
+  const via2=intersect(aOut,bIn)||intersect(bOut,aIn);
+  if(via2){const r={pass:false,reason:`2 clicks via “${via2}”`};sepCache.set(key,r);return r;}
+  if(minSep<=3){const r={pass:true,reason:"≥3 clicks apart (exact)"};sepCache.set(key,r);return r;}
+
+  minute("probing depth 3 (sampled 2-hop frontier)…");
+  const fa=await twoHopOut(a.title,aOut);
+  let via3=intersect(fa,bIn);
+  if(!via3){const fb=await twoHopOut(b.title,bOut);via3=intersect(fb,aIn);}
+  if(via3){const r={pass:false,reason:`3 clicks via “${via3}” (sampled)`};sepCache.set(key,r);return r;}
+  const r={pass:true,reason:`≥${minSep} clicks apart (depth-3 sampled)`};
+  sepCache.set(key,r);return r;
+}
+
+/* ---------- frames ---------- */
+function wikiUrl(t){return "https://en.wikipedia.org/wiki/"+encodeURIComponent(t.replace(/ /g,"_"));}
+function frameState(i,state){$("frame"+i).dataset.state=state;
+  $("frame"+i).classList.toggle("hung",state==="hung");
+  $("frame"+i).classList.toggle("transit",state==="transit");
+  if(state==="transit")$("frame"+i).querySelector(".await").innerHTML=`IN TRANSIT<br>CRATE NO. ${i+1}`;
+  if(state==="idle")$("frame"+i).querySelector(".await").innerHTML="AWAITING<br>ACQUISITION";
+}
+function hangArtifact(i,c){
+  const f=$("frame"+i);
+  frameState(i,"hung");
+  f.querySelector(".letter").textContent=c.title[0].toUpperCase();
+  f.querySelector(".acc").textContent=`ACC. ${exhibitionNo}.${"ABC"[i]}`;
+  f.querySelector("h3").innerHTML=`<a href="${wikiUrl(c.title)}" target="_blank" rel="noopener">${esc(c.title)}</a>`;
+  f.querySelector(".placard p").textContent=c.extract||"";
+  f.querySelector(".prov").textContent=`Documented in ${c.words.toLocaleString()} words · en.wikipedia · gift of the acquisitions committee`;
+  f.animate([{transform:"translateY(-14px)",opacity:.3},{transform:"translateY(0)",opacity:1}],{duration:420,easing:"ease-out"});
+  gavel();
+}
+
+function renderCertificate(){
+  const hung=locked.filter(Boolean);
+  if(hung.length<3){$("certificate").classList.remove("show");return;}
+  const lines=[];
+  for(let i=0;i<3;i++)for(let j=i+1;j<3;j++){
+    const k=pairKey(locked[i].title,locked[j].title);
+    lines.push(`<li>${esc(k)} — <b>${esc(sepEvidence.get(k)||"no affiliation on record")}</b></li>`);
+  }
+  lines.push(`<li>No two artifacts share a Wikipedia category. The registrar found nothing. The rest is the curator’s problem.</li>`);
+  $("certLines").innerHTML=lines.join("");
+  $("certificate").classList.add("show");
+}
+
+/* ---------- acquisition flow ---------- */
+async function acquireFrame(i,minSep){
+  frameState(i,"transit");
+  const started=Date.now();
+  for(let attempt=1;attempt<=10;attempt++){
+    const cand=await nextValidated();
+    let ok=true;
+    for(let j=0;j<3;j++){
+      if(j===i||!locked[j])continue;
+      minute(`frame ${i+1}: any acquaintance with “${locked[j].title}”?…`);
+      const res=await checkSeparation(cand,locked[j],minSep);
+      if(!res.pass){minute(`objection sustained — ${cand.title}: ${res.reason}`,"bad");objection();ok=false;break;}
+      minute(`no acquaintance found: ${res.reason}`,"ok");
+      sepEvidence.set(pairKey(cand.title,locked[j].title),res.reason);
+    }
+    if(ok){
+      await sleep(Math.max(0,HANG_GAP-(Date.now()-started)));
+      locked[i]=cand;hangArtifact(i,cand);
+      minute(`artifact accessioned: ${cand.title}`,"ok");
+      return;
+    }
+  }
+  throw new Error("Ten objections on one frame — a stubborn wall. Reconvene, or lower the registrar standard.");
+}
+
+async function convene(){
+  if(acquiring)return;
+  acquiring=true;
+  locked=[null,null,null];
+  sepEvidence.clear();
+  exhibitionNo=String(Math.floor(1000+Math.random()*8999));
+  $("certificate").classList.remove("show");
+  const btn=$("convene");btn.disabled=true;
+  $("console").classList.add("working");
+  const minSep=parseInt($("minSep").value,10);
+  $("sepBadge").textContent=`REGISTRAR STANDARD: ${minSep} CLICKS`;
+  minute("— the committee convenes —");
+  fillPool();
+  try{
+    for(let i=0;i<3;i++)await acquireFrame(i,minSep);
+    fanfare();
+    minute("three strangers accessioned. the wall is ready. the connection is not.","ok");
+    onExhibitionChange(true);
+  }catch(e){
+    objection();
+    minute(e.message,"bad");
+    for(let i=0;i<3;i++)if(!locked[i])frameState(i,"idle");
+  }
+  $("console").classList.remove("working");
+  btn.disabled=false;acquiring=false;
+}
+
+async function deaccession(i){
+  if(acquiring||!locked[i])return;acquiring=true;
+  const btn=$("convene");btn.disabled=true;
+  $("console").classList.add("working");
+  const minSep=parseInt($("minSep").value,10);
+  minute(`deaccession requested on frame ${i+1} — the curator saw a connection. good instinct.`);
+  const keep=locked[i];locked[i]=null;
+  try{
+    frameState(i,"transit");
+    let done=false;
+    for(let attempt=1;attempt<=10&&!done;attempt++){
+      const cand=await nextValidated();
+      let ok=true;
+      for(let j=0;j<3;j++){
+        if(j===i||!locked[j])continue;
+        const res=await checkSeparation(cand,locked[j],minSep);
+        if(!res.pass){minute(`objection sustained — ${cand.title}: ${res.reason}`,"bad");ok=false;break;}
+        sepEvidence.set(pairKey(cand.title,locked[j].title),res.reason);
+      }
+      if(ok){locked[i]=cand;hangArtifact(i,cand);minute(`frame ${i+1} now holds: ${cand.title}`,"ok");done=true;}
+    }
+    if(!locked[i]){locked[i]=keep;hangArtifact(i,keep);minute("no acceptable replacement — the original remains on the wall","bad");}
+    onExhibitionChange(false);
+  }catch(e){locked[i]=keep;hangArtifact(i,keep);minute(e.message,"bad");}
+  $("console").classList.remove("working");
+  btn.disabled=false;acquiring=false;
+}
+
+/* ---------- thesis machine ---------- */
+const THESIS_TITLES=[
+  "Three Strangers, One Wall",
+  "The Provenance of Coincidence",
+  "Adjacency Without Consent",
+  "A Catalogue of the Unacquainted",
+  "The Long Way Around Everything",
+  "Objects in Search of an Argument"
+];
+const THESIS_BODIES=[
+  (a,b,c)=>`In placing ${a} beside ${b}, the museum makes no claim of kinship — it manufactures one, publicly, and dares the visitor to locate the seam. ${c} has been included as a witness, and like most witnesses it will eventually be treated as an accomplice.`,
+  (a,b,c)=>`The registrar has verified that ${a}, ${b}, and ${c} share no category, no citation, and no discernible acquaintance. The curators regard this as an administrative oversight on the part of reality, which the present exhibition intends to correct.`,
+  (a,b,c)=>`${a} is not about ${b}. ${b} owes nothing to ${c}. And yet the visitor, standing at the correct distance, will begin to suspect that all three have been corresponding privately for years.`,
+  (a,b,c)=>`Scholarship connects what the evidence has already joined. Curation, practiced honestly, does the opposite: it hangs ${a}, ${b}, and ${c} on a single wall and waits, with institutional patience, for the visitor to confess a pattern.`
+];
+const THESIS_ENDINGS=[
+  "Therefore: the essay is the exhibit. The objects are merely the alibi.",
+  "Therefore: stand before the wall until the coincidence blinks first.",
+  "Therefore: 3,000 words, no apologies, and at least one metaphor the registrar would not approve.",
+  "Therefore: connection is not discovered in this annex. It is committed."
+];
+function generateThesis(){
+  if(locked.some(l=>!l))return;
+  const [a,b,c]=locked.map(l=>l.title);
+  const title=THESIS_TITLES[Math.floor(Math.random()*THESIS_TITLES.length)];
+  const body=THESIS_BODIES[Math.floor(Math.random()*THESIS_BODIES.length)](a,b,c);
+  const ending=THESIS_ENDINGS[Math.floor(Math.random()*THESIS_ENDINGS.length)];
+  currentThesis=`EXHIBITION ${exhibitionNo} — ${title}\n\n${body}\n\n${ending}\n\nArtifacts: ${a} · ${b} · ${c}`;
+  const out=$("thesisOutput");
+  out.querySelector(".thesis-number").textContent=`EXHIBITION ${exhibitionNo} · WALL TEXT, FIRST STATE`;
+  out.querySelector("h3").textContent=title;
+  out.querySelector("p:not(.thesis-number)").textContent=body;
+  out.querySelector("blockquote").textContent=ending;
+  out.animate([{opacity:.25,transform:"translateY(9px)"},{opacity:1,transform:"translateY(0)"}],{duration:380});
+  $("generateThesis").disabled=false;
+  $("copyThesis").disabled=false;
+}
+$("generateThesis").addEventListener("click",generateThesis);
+$("copyThesis").addEventListener("click",async event=>{
+  if(!currentThesis)return;
+  try{await navigator.clipboard.writeText(currentThesis);event.currentTarget.textContent="Copied";}
+  catch{event.currentTarget.textContent="Clipboard blocked";}
+  setTimeout(()=>{$("copyThesis").textContent="Copy wall text";},1600);
+});
+
+/* ---------- gift shop ---------- */
+function renderGiftshop(){
+  if(locked.some(l=>!l))return;
+  const [a,b,c]=locked.map(l=>l.title);
+  $("products").innerHTML=`
+    <article><div class="product-art tote"><span>${esc(a.toUpperCase())}<br>&amp; NOTHING<br>ADJACENT</span></div>
+      <h3>The ${esc(a)} Memorial Tote</h3><p>Carries everything except the connection.</p>
+      <strong>$0.00 <small>institutional fiction</small></strong></article>
+    <article><div class="product-art postcard"><span>Greetings from ${esc(b)} — wish it were relevant.</span></div>
+      <h3>${esc(b)}: The Companion Postcard</h3><p>Postage due wherever ${esc(c)} is discussed.</p>
+      <strong>$0.00 <small>institutional fiction</small></strong></article>
+    <article><div class="product-art mug"><span>${esc(a.toUpperCase())} /<br>${esc(c.toUpperCase())}</span></div>
+      <h3>The Commemorative Mug</h3><p>Two subjects, one handle, zero documented paths between them.</p>
+      <strong>$0.00 <small>institutional fiction</small></strong></article>`;
+}
+
+/* ---------- curator's desk ---------- */
+const STAGES=[
+  {max:0,title:"THE EMPTY WALL",text:"Every exhibition begins as a blank room and a curator who has promised too much."},
+  {max:299,title:"TENTATIVE DOCENT",text:"You have begun pointing at things. The pointing does not yet constitute an argument."},
+  {max:799,title:"GALLERY APPRENTICE",text:"A first thread has appeared between two of the artifacts. The museum recommends against tugging it in public just yet."},
+  {max:1499,title:"ASSOCIATE CURATOR",text:"The objects have started answering each other. Whether you are transcribing or ventriloquizing is no longer the institution’s concern."},
+  {max:2399,title:"SENIOR CURATOR OF FORCED KINSHIP",text:"The wall text is winning. Visitors would now be embarrassed to admit they don’t see it."},
+  {max:2999,title:"CHIEF OF INSTITUTIONAL CERTAINTY",text:"Hundreds of words from tenure. The connection is nearly load-bearing."},
+  {max:Infinity,title:"TENURED PAMPHLETEER",text:"3,000 words. The connection now exists, retroactively, and always has. The registrar has been notified."}
+];
+function essayWords(){return $("essay").value.split(/\s+/).filter(Boolean).length;}
+function updateDesk(){
+  const words=essayWords();
+  const stage=STAGES.find(s=>words<=s.max);
+  $("convictionStage").textContent=stage.title;
+  $("convictionText").textContent=stage.text;
+  $("wordCount").textContent=`${words.toLocaleString()} WORDS`;
+  const pct=Math.min(100,(words/MIN_WORDS)*100);
+  $("meterBar").querySelector("i").style.width=pct+"%";
+  $("meterBar").setAttribute("aria-valuenow",Math.min(words,MIN_WORDS));
+}
+let saveTimer=null;
+$("essay").addEventListener("input",()=>{
+  updateDesk();
+  $("saveState").textContent="SAVING…";
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    localStorage.setItem("mncw-draft",JSON.stringify({
+      text:$("essay").value,
+      topics:locked.filter(Boolean).map(l=>l.title),
+      exhibitionNo, when:new Date().toISOString()}));
+    $("saveState").textContent="DRAFT SAVED LOCALLY";
+  },500);
+});
+function restoreDraft(){
+  try{
+    const d=JSON.parse(localStorage.getItem("mncw-draft")||"null");
+    if(d&&d.text){$("essay").value=d.text;
+      if(d.topics&&d.topics.length===3&&locked.every(l=>!l))
+        $("deskTopics").textContent=d.topics.join(" · ").toUpperCase()+" (PREVIOUS EXHIBITION)";
+    }
+  }catch(e){}
+  updateDesk();
+}
+$("clearEssay").addEventListener("click",()=>{
+  if(!$("essay").value||confirm("Burn the current draft? The registrar keeps no copies.")){
+    $("essay").value="";localStorage.removeItem("mncw-draft");updateDesk();
+  }
+});
+$("downloadEssay").addEventListener("click",()=>{
+  const topics=locked.filter(Boolean).map(l=>l.title);
+  const head=`THE MUSEUM OF NEEDLESS CONNECTION — EXHIBITION ${exhibitionNo||"(unnumbered)"}\n`+
+    (topics.length?`Artifacts: ${topics.join(" · ")}\n`:"")+
+    (currentThesis?`\n${currentThesis}\n`:"")+
+    `\n${"—".repeat(30)}\nWALL ESSAY (${essayWords().toLocaleString()} words)\n${"—".repeat(30)}\n\n`;
+  const blob=new Blob([head+$("essay").value],{type:"text/plain"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`exhibition-${exhibitionNo||"draft"}.txt`;
+  a.click();URL.revokeObjectURL(a.href);
+});
+
+/* ---------- permanent collection ---------- */
+function renderCollection(){
+  const list=JSON.parse(localStorage.getItem("mncw-collection")||"[]");
+  const ul=$("collectionList");
+  ul.innerHTML=list.length?list.map(e=>
+    `<li><span class="when">${new Date(e.when).toLocaleDateString()}</span>
+     <span><b>${esc(e.thesisTitle||"Untitled exhibition")}</b><small>${e.topics.map(esc).join(" · ")}</small></span>
+     <span class="words">${(e.words||0).toLocaleString()} WORDS</span></li>`).join("")
+    :`<li class="collection-empty">Nothing has been filed. The permanent collection is, for now, a rumor.</li>`;
+}
+$("fileExhibition").addEventListener("click",()=>{
+  if(locked.some(l=>!l)){minute("nothing to file — the wall is empty. convene the committee first.","bad");
+    $("acquisition").scrollIntoView({behavior:"smooth"});return;}
+  const list=JSON.parse(localStorage.getItem("mncw-collection")||"[]");
+  list.unshift({when:new Date().toISOString(),
+    topics:locked.map(l=>l.title),
+    thesisTitle:currentThesis?currentThesis.split("\n")[0].replace(/^EXHIBITION \d+ — /,""):"Untitled exhibition",
+    words:essayWords(),minSep:$("minSep").value,mode:MODE});
+  localStorage.setItem("mncw-collection",JSON.stringify(list.slice(0,25)));
+  renderCollection();
+  $("collection").scrollIntoView({behavior:"smooth"});
+});
+$("clearCollection").addEventListener("click",()=>{
+  if(confirm("Deaccession the entire permanent collection?")){
+    localStorage.removeItem("mncw-collection");renderCollection();
+  }
+});
+
+/* ---------- registrar's ledger (shared Google Sheet) ---------- */
+$("logRegistrar").addEventListener("click",async()=>{
+  if(locked.some(l=>!l)){minute("no acquisition to log — the wall is empty","bad");return;}
+  const url=$("sheetUrl").value.trim();
+  if(!url){minute("no ledger url set — open the committee bylaws to add one","bad");return;}
+  try{
+    await fetch(url,{method:"POST",mode:"no-cors",
+      body:JSON.stringify({t1:locked[0].title,t2:locked[1].title,t3:locked[2].title,
+        u1:wikiUrl(locked[0].title),u2:wikiUrl(locked[1].title),u3:wikiUrl(locked[2].title),
+        minSep:$("minSep").value,mode:"museum-"+MODE})});
+    minute("acquisition filed in the registrar's ledger","ok");
+  }catch(e){minute("ledger unreachable — check the webhook url","bad");}
+});
+
+/* ---------- referendum ---------- */
+const basePoll={made:41,crime:23,retires:36};
+document.querySelectorAll("#referendum button").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll("#referendum button").forEach(b=>b.classList.remove("selected"));
+  btn.classList.add("selected");
+  const votes=JSON.parse(localStorage.getItem("mncw-poll")||"null")||{...basePoll};
+  votes[btn.dataset.answer]+=1;
+  localStorage.setItem("mncw-poll",JSON.stringify(votes));
+  renderPoll(votes);
+}));
+function renderPoll(votes){
+  votes=votes||JSON.parse(localStorage.getItem("mncw-poll")||"null")||{...basePoll};
+  const total=Object.values(votes).reduce((s,v)=>s+v,0);
+  const rows=document.querySelectorAll("#pollResults div");
+  ["made","crime","retires"].forEach((k,i)=>{
+    const pct=Math.round((votes[k]/total)*100);
+    rows[i].querySelector("i").style.setProperty("--result",pct+"%");
+    rows[i].querySelector("b").textContent=pct+"%";
+  });
+}
+
+/* ---------- glue ---------- */
+function onExhibitionChange(fresh){
+  renderCertificate();
+  generateThesis();
+  renderGiftshop();
+  $("deskTopics").textContent=locked.map(l=>l.title).join(" · ").toUpperCase();
+  if(fresh){
+    $("gallery").scrollIntoView({behavior:"smooth"});
+    if($("essay").value&&essayWords()>0)
+      minute("a previous draft remains at the curator's desk — burn it or keep building","ok");
+  }
+}
+
+document.querySelectorAll(".deaccession").forEach(b=>b.addEventListener("click",()=>deaccession(+b.dataset.i)));
+$("convene").addEventListener("click",convene);
+$("issueCredential").addEventListener("click",()=>{
+  $("credentialNumber").textContent=String(Math.floor(1000+Math.random()*8999));
+  $("credential").animate([{transform:"rotate(-1deg) scale(.97)",opacity:.4},{transform:"rotate(0) scale(1)",opacity:1}],{duration:350});
+});
+
+const menuButton=document.querySelector(".menu-button");
+const nav=document.querySelector("#annex-nav");
+menuButton.addEventListener("click",()=>{
+  const open=nav.classList.toggle("open");
+  menuButton.setAttribute("aria-expanded",String(open));
+});
+nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>nav.classList.remove("open")));
+
+/* ---------- boot ---------- */
+renderPoll();
+renderCollection();
+restoreDraft();
+detectMode().then(()=>{
+  if(MODE==="live"){minute("registrar connected to en.wikipedia — live acquisitions enabled","ok");fillPool();}
+  else minute("the committee is working from the storage room — demo acquisitions only");
+});
+</script>
+</body>
+</html>
